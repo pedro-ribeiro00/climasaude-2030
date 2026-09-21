@@ -38,12 +38,7 @@ url = "https://api.open-meteo.com/v1/forecast"
 parametros = {
     "latitude": latitude,
     "longitude": longitude,
-    "daily": [
-        "temperature_2m_max",
-        "apparent_temperature_max",
-        "uv_index_max",
-        "precipitation_sum"
-    ],
+    "daily": "temperature_2m_max,apparent_temperature_max,uv_index_max,precipitation_sum",
     "timezone": "America/Sao_Paulo"
 }
 
@@ -53,6 +48,9 @@ resposta = requests.get(
     params=parametros,
     timeout=10
 )
+
+# Interrompe a execução caso a API retorne um erro HTTP
+resposta.raise_for_status()
 
 # Converte a resposta JSON para um dicionário Python
 dados = resposta.json()
