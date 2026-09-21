@@ -123,3 +123,69 @@ Nas próximas etapas, novas fontes poderão ser adicionadas ao fluxo, incluindo 
 | Open-Meteo Weather API | Integrada | Dados meteorológicos |
 | IBGE | Planejada | Dados territoriais e demográficos |
 | Páginas públicas sobre clima e saúde | Planejada | Conteúdo textual para scraping e análise futura |
+
+## 9. Atualizacao de fontes e processamento - TP2
+
+### Ministerio da Saude - Ondas de Calor
+
+- **Tipo:** pagina publica na Web.
+- **Coleta:** Beautiful Soup executado separadamente em `scripts/scrape_heat_content.py`.
+- **Conteudo:** titulos, paragrafos e itens de lista relacionados a calor extremo, impactos na saude e orientacoes.
+- **Destino:** `data/raw/conteudo_calor_saude.csv` e `data/raw/conteudo_calor_saude.txt`.
+- **Objetivo:** complementar os indicadores numericos com contexto textual sobre calor e saude.
+
+### World Health Organization - Heat and Health
+
+- **Tipo:** pagina publica na Web.
+- **Coleta:** Beautiful Soup no mesmo script de scraping.
+- **Conteudo:** blocos textuais sobre exposicao ao calor, impactos na saude e medidas preventivas.
+- **Destino:** integrado aos mesmos arquivos CSV/TXT.
+- **Objetivo:** ampliar a base textual e permitir comparacao de conteudo entre fontes.
+
+### Estrutura do CSV de scraping
+
+| Campo | Descricao |
+|---|---|
+| `fonte` | Nome da instituicao de origem |
+| `titulo_pagina` | Titulo HTML da pagina |
+| `url` | Endereco da pagina coletada |
+| `tipo_elemento` | Tag HTML de origem (`h1`, `h2`, `h3`, `p`, `li`) |
+| `texto` | Conteudo textual extraido |
+| `coletado_em_utc` | Momento da coleta em UTC |
+
+### Upload de CSV
+
+O TP2 tambem permite que o usuario envie um arquivo CSV pela interface. O arquivo e mantido em `st.session_state` durante a sessao. Quando o CSV possui uma coluna chamada `texto`, seu conteudo e incorporado as estatisticas e a nuvem de palavras, complementando os dados obtidos por scraping.
+
+## 10. Fluxo de dados atualizado - TP2
+
+### Dados climaticos
+
+`Open-Meteo -> Requests -> JSON -> Pandas -> cache -> Streamlit`
+
+### Conteudo Web
+
+`Paginas publicas -> Requests -> Beautiful Soup -> limpeza/deduplicacao -> Pandas -> CSV/TXT em data/raw -> Streamlit -> estatisticas/nuvem de palavras`
+
+### Dados enviados pelo usuario
+
+`Upload CSV -> Pandas -> st.session_state -> visualizacao/estatisticas -> download CSV`
+
+## 11. Qualidade dos dados no TP2
+
+- o scraper remove scripts, estilos, navegacao e rodapes antes da extracao;
+- fragmentos muito pequenos e duplicados sao descartados;
+- cada registro preserva a fonte e a URL de origem;
+- falhas em uma fonte nao impedem o salvamento dos dados coletados de outras fontes;
+- conteudos de paginas Web podem mudar ao longo do tempo, portanto o scraping deve ser reexecutado quando necessario;
+- os textos sao informativos e nao substituem orientacao medica ou alertas oficiais em tempo real.
+
+## 12. Situacao das fontes no TP2
+
+| Fonte | Status no TP2 | Finalidade |
+|---|---|---|
+| Open-Meteo | Integrada | Dados meteorologicos |
+| Ministerio da Saude | Integrada via scraping | Conteudo sobre calor e saude |
+| WHO | Integrada via scraping | Conteudo complementar sobre calor e saude |
+| Upload CSV | Integrado | Entrada adicional de dados pelo usuario |
+| IBGE | Planejada | Contexto territorial e demografico futuro |

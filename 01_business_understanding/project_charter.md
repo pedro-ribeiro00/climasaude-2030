@@ -128,3 +128,29 @@ O **CRISP-DM** será utilizado como referência complementar para o ciclo de Ci�
 | Modeling | Modeling |
 | Evaluation | Modeling / Acceptance |
 | Deployment | Deployment |
+
+## 14. Atualizacao do escopo - TP2
+
+No TP2, a solucao evolui de um prototipo de visualizacao para uma aplicacao interativa. O escopo passa a incluir:
+
+- selecao de diferentes cidades pelo usuario;
+- coleta de conteudo publico sobre calor e saude com Beautiful Soup;
+- armazenamento dos dados coletados em CSV e TXT;
+- exibicao do conteudo coletado em tabelas e estatisticas;
+- nuvem de palavras;
+- cache para reduzir processamento e chamadas repetidas;
+- estado de sessao para preservar dados de interacao;
+- upload e download de arquivos CSV;
+- preparacao do repositorio Git/GitHub para continuidade e deploy.
+
+### Indicadores adicionais do TP2
+
+| Indicador | Criterio de sucesso |
+|---|---|
+| Interatividade | Usuario consegue selecionar diferentes cidades |
+| Web scraping | Script Beautiful Soup gera arquivos CSV e TXT |
+| Exploracao textual | Tabela, frequencias e nuvem de palavras sao exibidas |
+| Cache | Consultas climaticas utilizam `st.cache_data` |
+| Sessao | Historico de cidades e upload usam `st.session_state` |
+| Upload/download | Usuario consegue enviar e baixar CSVs |
+| Documentacao | Project Charter e Data Summary Report refletem o TP2 |
