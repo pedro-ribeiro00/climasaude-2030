@@ -31,3 +31,30 @@ streamlit run app.py
 
 O scraping e executado separadamente da interface e grava os dados em `data/raw/`,
 conforme a organizacao do projeto.
+
+## Execucao do TP3
+
+O TP3 possui dois processos. A API deve ser iniciada antes da interface:
+
+```bash
+# Terminal 1
+source .venv/bin/activate
+uvicorn api.main:app --reload
+```
+
+```bash
+# Terminal 2
+source .venv/bin/activate
+streamlit run app.py
+```
+
+A URL da API pode ser configurada pela variavel `CLIMASAUDE_API_URL`; o valor padrao e `http://127.0.0.1:8000`. Em producao, os dois servicos devem ter verificacao de saude, logs sem dados sensiveis e comunicacao HTTPS.
+
+Antes de qualquer deploy ou entrega:
+
+```bash
+python -m pytest -q
+python scripts/validate_tp3.py
+```
+
+Nenhuma credencial de LLM deve ser adicionada ao repositorio. A futura integracao usara variaveis de ambiente ou um gerenciador de segredos no servico que executar a FastAPI.

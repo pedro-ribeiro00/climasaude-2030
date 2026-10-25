@@ -189,3 +189,59 @@ O TP2 tambem permite que o usuario envie um arquivo CSV pela interface. O arquiv
 | WHO | Integrada via scraping | Conteudo complementar sobre calor e saude |
 | Upload CSV | Integrado | Entrada adicional de dados pelo usuario |
 | IBGE | Planejada | Contexto territorial e demografico futuro |
+
+## 13. Atualizacao de fontes e arquitetura - TP3
+
+No TP3, as fontes permanecem adequadas ao problema, mas o caminho dos dados foi reorganizado. A Open-Meteo agora e consultada pela FastAPI, e nao diretamente pela interface. Os textos coletados sao enviados pela interface a uma rota POST para analise, demonstrando a integracao entre as duas aplicacoes.
+
+### Fluxos atualizados
+
+`Open-Meteo → Requests → FastAPI → JSON normalizado → cliente HTTP → Streamlit`
+
+`Ministerio da Saude/WHO → Requests → Beautiful Soup → limpeza e deduplicacao → CSV/TXT → FastAPI de analise → Streamlit`
+
+`Upload CSV → memoria da sessao Streamlit → visualizacao e, se houver coluna texto, analise via FastAPI`
+
+### Esquema do corpus textual no TP3
+
+| Campo | Tipo esperado | Finalidade |
+|---|---|---|
+| `fonte` | texto | Instituicao responsavel |
+| `titulo_pagina` | texto | Contexto da pagina de origem |
+| `url` | texto | Rastreabilidade e futura citacao |
+| `tipo_elemento` | categoria | Tag HTML que originou o trecho |
+| `texto` | texto | Conteudo extraido |
+| `idioma` | categoria | Preparacao de limpeza e recuperacao multilingue |
+| `hash_conteudo` | texto | Deduplicacao e deteccao de alteracoes |
+| `coletado_em_utc` | data/hora ISO 8601 | Auditoria da atualizacao |
+
+## 14. Avaliacao de scraping dinamico e Selenium
+
+Foi verificado que o conteudo necessario das paginas atuais esta disponivel no HTML retornado por uma requisicao HTTP comum. Nao ha botao de carregamento, formulario, autenticacao, rolagem infinita nem conteudo dependente de execucao de JavaScript para os trechos usados pelo projeto.
+
+Por isso, Selenium nao e necessario nesta fase. Beautiful Soup foi mantido por ser mais simples, rapido, reproduzivel e adequado as fontes. Selenium sera considerado se uma nova fonte exigir interacao com o navegador ou renderizacao dinamica. A decisao evita adicionar um navegador, driver e pontos extras de falha sem beneficio para a qualidade dos dados.
+
+## 15. Qualidade e limitacoes no TP3
+
+- os registros sao deduplicados por fonte e hash SHA-256 do texto;
+- fonte, URL e momento da coleta permitem auditar cada trecho;
+- a identificacao de idioma e declarada por fonte e devera ser validada em escala maior;
+- a mudanca de estrutura HTML pode reduzir a quantidade coletada e exige monitoramento;
+- a coleta registra o conteudo disponivel no momento e nao substitui versoes oficiais arquivadas;
+- a previsao da Open-Meteo esta sujeita a revisoes e indisponibilidade temporaria;
+- o CSV enviado pelo usuario fica somente na sessao e nao recebe garantia de qualidade;
+- os dados nao devem ser usados isoladamente para diagnostico ou decisao medica.
+
+## 16. Preparacao dos dados para LLM
+
+O corpus preserva os metadados necessarios para um fluxo futuro de RAG: limpeza, segmentacao em trechos, embeddings, recuperacao por similaridade e citacao da URL original. O `hash_conteudo` ajudara a evitar reindexacao de trechos inalterados. Antes do uso com um modelo, ainda serao necessarios testes de qualidade, regras contra prompt injection presente nas paginas e avaliacao de fidelidade das respostas.
+
+## 17. Situacao consolidada das fontes
+
+| Fonte | Status no TP3 | Acesso | Uso |
+|---|---|---|---|
+| Open-Meteo | Integrada via FastAPI | API JSON | Previsao de sete dias |
+| Ministerio da Saude | Integrada | HTML estatico + Beautiful Soup | Orientacoes em portugues |
+| WHO | Integrada | HTML estatico + Beautiful Soup | Contexto internacional |
+| Upload CSV | Integrado, nao persistente | Interface Streamlit | Exploracao complementar |
+| IBGE | Planejada | API/base publica | Contexto territorial futuro |

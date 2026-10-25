@@ -1,3 +1,4 @@
+import hashlib
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -11,10 +12,12 @@ FONTES = [
     {
         "fonte": "Ministerio da Saude",
         "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/o/ondas-de-calor",
+        "idioma": "pt-BR",
     },
     {
         "fonte": "World Health Organization",
         "url": "https://www.who.int/news-room/fact-sheets/detail/climate-change-heat-and-health",
+        "idioma": "en",
     },
 ]
 
@@ -26,10 +29,11 @@ HEADERS = {
 }
 
 
-def extrair_conteudo(fonte: str, url: str) -> list[dict]:
+def extrair_conteudo(fonte: str, url: str, idioma: str) -> list[dict]:
     """Baixa uma pagina publica e extrai blocos textuais com Beautiful Soup."""
     resposta = requests.get(url, timeout=30, headers=HEADERS)
     resposta.raise_for_status()
+    resposta.encoding = resposta.apparent_encoding or resposta.encoding
 
     soup = BeautifulSoup(resposta.text, "html.parser")
 
@@ -37,7 +41,13 @@ def extrair_conteudo(fonte: str, url: str) -> list[dict]:
     for tag in soup(["script", "style", "nav", "footer", "noscript", "svg"]):
         tag.decompose()
 
-    area_principal = soup.find("main") or soup.find("article") or soup.body or soup
+    area_principal = (
+        soup.select_one("main article")
+        or soup.find("article")
+        or soup.find("main")
+        or soup.body
+        or soup
+    )
     titulo_pagina = soup.title.get_text(" ", strip=True) if soup.title else ""
     coletado_em = datetime.now(timezone.utc).isoformat()
 
@@ -59,6 +69,8 @@ def extrair_conteudo(fonte: str, url: str) -> list[dict]:
                 "url": url,
                 "tipo_elemento": elemento.name,
                 "texto": texto,
+                "idioma": idioma,
+                "hash_conteudo": hashlib.sha256(texto.encode("utf-8")).hexdigest(),
                 "coletado_em_utc": coletado_em,
             }
         )
@@ -73,7 +85,7 @@ def main() -> None:
     for item in FONTES:
         print(f"Coletando: {item['fonte']}")
         try:
-            registros = extrair_conteudo(item["fonte"], item["url"])
+            registros = extrair_conteudo(item["fonte"], item["url"], item["idioma"])
             print(f"  {len(registros)} blocos textuais coletados")
             todos_registros.extend(registros)
         except requests.RequestException as exc:
@@ -85,7 +97,7 @@ def main() -> None:
         sys.exit(1)
 
     df = pd.DataFrame(todos_registros).drop_duplicates(
-        subset=["fonte", "texto"]
+        subset=["fonte", "hash_conteudo"]
     )
 
     pasta_saida = Path("data/raw")
