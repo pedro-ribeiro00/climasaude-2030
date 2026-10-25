@@ -159,21 +159,17 @@ No TP2, a solucao evolui de um prototipo de visualizacao para uma aplicacao inte
 
 ### Reavaliacao do problema de negocio
 
-O TP3 confirma o problema original, mas amplia sua formulacao. O desafio nao e apenas exibir uma previsao meteorologica: e integrar dados estruturados e conteudo publico de diferentes origens, manter rastreabilidade e oferecer funcionalidades independentes sem exigir que o usuario conheca APIs ou formatos tecnicos.
-
-A FastAPI passa a ser a camada de servico entre fontes externas e interface. Essa decisao reduz o acoplamento do Streamlit, padroniza respostas e erros e cria um ponto seguro para integracoes futuras. A interface multipagina organiza a jornada por objetivo: compreender o projeto, consultar clima, explorar conteudo, trabalhar com arquivos e conhecer metodologia e limites.
+O problema original permanece relevante: dados climaticos e orientacoes sobre calor estao em fontes separadas. No TP3, a solucao passa a integrar essas informacoes por meio de uma FastAPI e organiza as funcionalidades em paginas diferentes no Streamlit.
 
 ### Escopo implementado no TP3
 
 - aplicacao Streamlit com cinco paginas e menu de navegacao lateral;
-- camada FastAPI consumida pelo Streamlit;
-- rotas GET para saude do servico, catalogo de cidades e previsao;
-- rota POST para analise de uma colecao de textos;
-- scraping aprimorado com proveniencia, idioma, hash e horario de coleta;
+- FastAPI consumida pelo Streamlit;
+- rotas GET para status, cidades e previsao;
+- rota POST para analise de textos;
+- scraping com Beautiful Soup e armazenamento em CSV/TXT;
 - upload e download de CSV durante a sessao;
-- documentacao interativa da API;
-- testes automatizados e validacao dos artefatos;
-- plano de integracao com LLM usando recuperacao de fontes (RAG).
+- preparacao conceitual para uso futuro de LLM.
 
 ### Metas e indicadores atualizados
 
@@ -182,25 +178,13 @@ A FastAPI passa a ser a camada de servico entre fontes externas e interface. Ess
 | Separar interface e servicos | Streamlit consome endpoints da FastAPI |
 | Oferecer navegacao clara | Cinco paginas acessiveis pelo menu lateral |
 | Disponibilizar API propria | Rotas GET e POST documentadas em `/docs` |
-| Preservar rastreabilidade | Textos possuem fonte, URL, idioma, hash e data de coleta |
-| Evitar complexidade desnecessaria | Beautiful Soup mantido enquanto o HTML for estatico |
-| Preparar uso responsavel de LLM | Plano RAG, citacoes, privacidade, guardrails e avaliacao documentados |
-| Garantir qualidade tecnica | Testes e validador da rubrica executam sem falhas |
+| Coletar conteudo Web | Beautiful Soup gera arquivos CSV e TXT |
+| Preparar futura integracao de LLM | Possibilidade de resumos e perguntas documentada |
 
 ### Decisao sobre Selenium
 
-As fontes atuais entregam o conteudo relevante no HTML inicial e nao exigem autenticacao, formularios, cliques ou carregamento por JavaScript. Portanto, Selenium nao agrega valor tecnico nesta fase. Requests e Beautiful Soup oferecem menor custo operacional e maior simplicidade. O uso de Selenium sera reavaliado se futuras fontes forem realmente dinamicas.
+As paginas utilizadas disponibilizam o conteudo necessario diretamente no HTML, portanto nao foi necessario utilizar Selenium. Beautiful Soup foi suficiente para esta etapa.
 
 ### Preparacao para LLM
 
-A evolucao prevista e um assistente informativo que combine a previsao selecionada com trechos recuperados de fontes publicas. O modelo devera responder apenas com base nas evidencias fornecidas, citar URLs, declarar insuficiencia de contexto e evitar diagnostico ou aconselhamento medico personalizado. A FastAPI abrigara a integracao, mantendo credenciais fora da interface. O plano detalhado esta em `03_modeling/llm_integration_plan.md`.
-
-### Riscos e respostas
-
-| Risco | Resposta planejada |
-|---|---|
-| Indisponibilidade de fonte externa | Timeout, mensagens claras, cache e tratamento HTTP |
-| Mudanca no HTML das fontes | Seletores simples, metadados e validacao do CSV |
-| Interpretacao medica indevida | Avisos de finalidade educativa e guardrails futuros |
-| Resposta de LLM sem fundamento | RAG, citacoes e conjunto de avaliacao antes da liberacao |
-| Exposicao de dados ou credenciais | Variaveis de ambiente e nao persistencia de uploads por padrao |
+Nas proximas etapas, os textos coletados poderao ser usados por um LLM para gerar resumos e responder perguntas simples sobre calor e saude. A FastAPI podera fazer a integracao entre o modelo e o Streamlit. As respostas deverao indicar suas fontes e manter finalidade informativa. O plano resumido esta em `03_modeling/llm_plan.md`.

@@ -2,12 +2,9 @@
 
 from pathlib import Path
 
-import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
-from wordcloud import WordCloud
 
-from climasaude.analysis import STOPWORDS
 from climasaude.api_client import (
     APIIndisponivel,
     analisar_textos_api,
@@ -180,21 +177,6 @@ def render_conteudo() -> None:
         st.subheader("Palavras mais frequentes")
         st.bar_chart(frequencias.set_index("palavra"))
 
-    if textos:
-        st.subheader("Nuvem de palavras")
-        nuvem = WordCloud(
-            width=1200,
-            height=500,
-            background_color="white",
-            stopwords=STOPWORDS,
-            collocations=False,
-        ).generate(" ".join(textos))
-        figura, eixo = plt.subplots(figsize=(12, 5))
-        eixo.imshow(nuvem, interpolation="bilinear")
-        eixo.axis("off")
-        st.pyplot(figura, width="stretch")
-        plt.close(figura)
-
     st.download_button(
         "Baixar conteudo filtrado",
         data=_csv_bytes(filtrado),
@@ -260,9 +242,9 @@ def render_projeto() -> None:
     )
     st.subheader("Preparacao para LLM")
     st.write(
-        "A base textual preserva fonte e URL para futura recuperacao com citacoes. "
-        "O plano de integracao preve RAG, validacao de respostas, privacidade e "
-        "avisos contra interpretacao medica indevida."
+        "Nas proximas etapas, os textos coletados poderao ser usados por um LLM "
+        "para gerar resumos e responder perguntas simples sobre calor e saude. "
+        "A FastAPI podera integrar o modelo ao Streamlit."
     )
     st.markdown(
         """

@@ -21,15 +21,6 @@ class AnaliseTextoEntrada(BaseModel):
     limite: int = Field(default=12, ge=1, le=50)
 
 
-@app.get("/", tags=["servico"])
-def raiz() -> dict:
-    return {
-        "servico": "ClimaSaude 2030 API",
-        "documentacao": "/docs",
-        "status": "online",
-    }
-
-
 @app.get("/health", tags=["servico"])
 def health_check() -> dict:
     return {"status": "ok", "versao": app.version}

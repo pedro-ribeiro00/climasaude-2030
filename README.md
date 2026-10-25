@@ -1,129 +1,107 @@
 # ClimaSaude 2030
 
-Projeto da disciplina **Projeto de Bloco: Inteligencia Artificial Aplicada**. O TP3 evolui o prototipo para uma aplicacao multipagina com separacao entre interface, API e fontes de dados.
+Projeto desenvolvido para a disciplina **Projeto de Bloco: Inteligencia Artificial Aplicada**.
 
 ## Problema de negocio
 
-Dados meteorologicos e orientacoes publicas sobre calor extremo existem em fontes separadas e nem sempre chegam ao cidadao de forma integrada e facil de interpretar. O ClimaSaude 2030 organiza previsoes climaticas e conteudo publico sobre calor e saude, preservando a origem dos dados e deixando a arquitetura pronta para analises futuras com LLM.
+Dados meteorologicos e orientacoes sobre calor extremo existem em fontes diferentes e nem sempre sao apresentados de forma integrada e simples. O ClimaSaude 2030 reune previsoes climaticas e conteudo publico sobre calor e saude em uma interface acessivel.
 
-A aplicacao tem finalidade educativa. Ela nao substitui alertas meteorologicos oficiais, atendimento medico ou orientacao de profissionais de saude.
+A aplicacao tem finalidade educativa. Ela nao substitui alertas oficiais ou orientacao medica.
 
-## Entregas do TP3
+## Funcionalidades do TP3
 
-- aplicacao Streamlit com cinco paginas e menu lateral;
-- paginas de inicio, previsao, conteudo Web, upload/download e documentacao;
-- FastAPI propria com documentacao automatica;
-- rotas GET para status, cidades e previsao;
-- rota POST para analise textual;
-- integracao real do Streamlit com a FastAPI;
-- scraping aprimorado com Beautiful Soup;
-- CSV e TXT com fonte, URL, idioma, hash e momento da coleta;
-- testes automatizados e validador da rubrica;
-- Project Charter e Data Summary Report revisados;
-- plano explicito de integracao futura com LLM e RAG.
+- aplicacao Streamlit com menu lateral e cinco paginas;
+- consulta de previsao climatica para cinco cidades;
+- visualizacao e download dos dados climaticos;
+- exibicao e analise de conteudo coletado da Web;
+- upload, visualizacao e download de CSV;
+- FastAPI integrada ao Streamlit;
+- web scraping com Beautiful Soup;
+- preparacao conceitual para uso futuro de LLM.
 
-## Arquitetura
+## Paginas da aplicacao
 
-```text
-Open-Meteo ───────────────→ FastAPI ──→ Streamlit multipagina
-                                  ↑
-Paginas publicas → Beautiful Soup → CSV/TXT → analise textual
-CSV do usuario ──────────────────────────────→ sessao Streamlit
-```
+1. **Inicio:** apresenta o objetivo e o funcionamento do projeto.
+2. **Previsao climatica:** consulta a previsao de sete dias.
+3. **Conteudo Web:** exibe e analisa os textos coletados.
+4. **Upload e download:** permite explorar um arquivo CSV.
+5. **Sobre o projeto:** resume o problema, os ODS e os proximos passos.
 
-O Streamlit nao consulta diretamente a Open-Meteo. A pagina de previsao chama `GET /previsao/{cidade_id}`. A pagina de conteudo envia os textos para `POST /analises/texto`. Essa separacao permite testar a regra de negocio, controlar erros de fontes externas e incorporar um provedor de LLM futuramente sem expor credenciais na interface.
+## FastAPI
 
-## Rotas da FastAPI
+A API possui as seguintes rotas:
 
 | Metodo | Rota | Funcao |
 |---|---|---|
-| GET | `/` | Identifica o servico |
-| GET | `/health` | Verifica status e versao |
-| GET | `/cidades` | Lista localidades disponiveis |
-| GET | `/previsao/{cidade_id}` | Normaliza a previsao de sete dias |
-| POST | `/analises/texto` | Calcula metricas e palavras frequentes |
+| GET | `/health` | Verifica se a API esta funcionando |
+| GET | `/cidades` | Lista as cidades disponiveis |
+| GET | `/previsao/{cidade_id}` | Consulta a previsao de sete dias |
+| POST | `/analises/texto` | Calcula estatisticas dos textos enviados |
 
-Exemplo do corpo da rota POST:
-
-```json
-{
-  "textos": ["Calor extremo exige hidratacao e atencao."],
-  "limite": 10
-}
-```
-
-Com a API em execucao, a documentacao interativa fica em `http://127.0.0.1:8000/docs`.
-
-## Web scraping e decisao sobre Selenium
-
-O script `scripts/scrape_heat_content.py` coleta blocos textuais de paginas publicas do Ministerio da Saude e da World Health Organization. Ele remove navegacao, scripts, estilos e rodapes, descarta fragmentos pequenos, elimina duplicidades e registra metadados de proveniencia.
-
-**Selenium nao foi utilizado porque nao ha necessidade tecnica nas fontes atuais.** O conteudo relevante ja esta presente no HTML devolvido pelo servidor e nao exige login, preenchimento de formulario, rolagem, clique ou execucao de JavaScript. Requests + Beautiful Soup executam a tarefa com menos dependencias, menor consumo de recursos e maior facilidade de teste. Se uma nova fonte carregar o conteudo somente apos interacao dinamica, Selenium podera ser incorporado de forma isolada ao pipeline de coleta.
+O Streamlit consome a rota GET de previsao e a rota POST de analise textual. A documentacao automatica fica disponivel em `http://127.0.0.1:8000/docs` quando a API esta em execucao.
 
 ## Fontes de dados
 
-1. **Open-Meteo Weather API:** previsao diaria de temperatura maxima, sensacao termica maxima, UV e precipitacao.
-2. **Ministerio da Saude — Ondas de Calor:** orientacoes publicas em portugues.
-3. **WHO — Heat and Health:** conteudo internacional complementar em ingles.
-4. **CSV enviado pelo usuario:** exploracao temporaria; uma coluna `texto` complementa a analise sem persistencia automatica.
+1. **Open-Meteo:** previsao de temperatura maxima, sensacao termica, indice UV e precipitacao.
+2. **Ministerio da Saude:** orientacoes publicas sobre ondas de calor.
+3. **World Health Organization:** informacoes complementares sobre calor e saude.
+4. **CSV do usuario:** dados adicionais enviados durante a sessao.
 
-## Preparacao do ambiente
+## Web scraping e Selenium
+
+O script `scripts/scrape_heat_content.py` usa Requests e Beautiful Soup para coletar titulos, paragrafos e itens de lista. O resultado e salvo em CSV e TXT dentro de `data/raw/`.
+
+As paginas utilizadas disponibilizam o conteudo necessario diretamente no HTML, portanto nao foi necessario utilizar Selenium. Beautiful Soup foi suficiente para esta etapa.
+
+## Preparacao para LLM
+
+Nas proximas etapas, os textos coletados poderao ser utilizados por um LLM para gerar resumos e responder perguntas simples sobre calor extremo e saude. A FastAPI podera servir como camada de integracao entre o modelo e a interface Streamlit. O plano esta em `03_modeling/llm_plan.md`.
+
+## Como executar
 
 Requer Python 3.9 ou superior.
+
+### 1. Preparar o ambiente
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-Para atualizar o scraping, validar a estrutura e executar todos os testes:
+### 2. Atualizar os dados de scraping
 
 ```bash
-bash scripts/prepare_tp3.sh
+python scripts/scrape_heat_content.py
 ```
 
-## Execucao
+### 3. Iniciar a FastAPI
 
-A aplicacao usa dois processos. Na raiz do repositorio, abra dois terminais com o ambiente virtual ativo.
-
-Terminal 1 — API:
+No primeiro terminal:
 
 ```bash
+source .venv/bin/activate
 uvicorn api.main:app --reload
 ```
 
-Terminal 2 — interface:
+### 4. Iniciar o Streamlit
+
+No segundo terminal:
 
 ```bash
+source .venv/bin/activate
 streamlit run app.py
 ```
 
-Por padrao, a interface usa `http://127.0.0.1:8000`. Para outro endereco:
-
-```bash
-export CLIMASAUDE_API_URL="http://servidor:8000"
-streamlit run app.py
-```
-
-## Testes e aceite
-
-```bash
-python -m pytest -q
-python scripts/validate_tp3.py
-```
-
-O mapeamento item por item da rubrica esta em `05_acceptance/tp3_checklist.md`.
-
-## Preparacao para LLM
-
-O arquivo `03_modeling/llm_integration_plan.md` define o caso de uso, a arquitetura RAG, o contrato de entrada e saida, cuidados com privacidade, guardrails e avaliacao. Nenhuma chave ou chamada a modelo foi adicionada no TP3. A base textual ja preserva metadados necessarios para segmentacao, recuperacao e citacao de fontes.
+Para testar o upload, pode ser usado o arquivo `data/sample_upload.csv`.
 
 ## Estrutura principal
 
 ```text
 climasaude-2030/
+├── app.py
+├── requirements.txt
+├── README.md
 ├── api/
 │   └── main.py
 ├── climasaude/
@@ -133,28 +111,22 @@ climasaude-2030/
 │   ├── ui.py
 │   └── weather.py
 ├── scripts/
-│   ├── prepare_tp3.sh
-│   ├── scrape_heat_content.py
-│   └── validate_tp3.py
-├── tests/
-├── data/raw/
+│   └── scrape_heat_content.py
+├── data/
+│   ├── raw/
+│   └── sample_upload.csv
 ├── 01_business_understanding/
 ├── 02_data_ingest_understanding/
 ├── 03_modeling/
-├── 04_deployment/
-├── 05_acceptance/
-├── app.py
-└── requirements.txt
+└── 04_deployment/
 ```
 
-## Metodologia e alinhamento
+## ODS e metodologia
 
-O projeto segue o TDSP, com CRISP-DM como referencia complementar. Relaciona-se principalmente ao **ODS 13 — Acao Contra a Mudanca Global do Clima**, com conexoes ao **ODS 3 — Saude e Bem-Estar** e ao **ODS 11 — Cidades e Comunidades Sustentaveis**.
+O projeto se relaciona principalmente ao **ODS 13 - Acao Contra a Mudanca Global do Clima**, com conexoes ao **ODS 3 - Saude e Bem-Estar** e ao **ODS 11 - Cidades e Comunidades Sustentaveis**.
+
+O repositorio segue a organizacao do TDSP, com CRISP-DM como referencia complementar.
 
 ## Repositorio
 
 https://github.com/pedro-ribeiro00/climasaude-2030
-
-## Status
-
-**TP3 implementado: Streamlit multipagina, FastAPI integrada, scraping rastreavel, documentacao revisada, preparacao para LLM e validacao automatizada.**

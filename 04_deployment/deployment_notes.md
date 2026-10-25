@@ -48,13 +48,4 @@ source .venv/bin/activate
 streamlit run app.py
 ```
 
-A URL da API pode ser configurada pela variavel `CLIMASAUDE_API_URL`; o valor padrao e `http://127.0.0.1:8000`. Em producao, os dois servicos devem ter verificacao de saude, logs sem dados sensiveis e comunicacao HTTPS.
-
-Antes de qualquer deploy ou entrega:
-
-```bash
-python -m pytest -q
-python scripts/validate_tp3.py
-```
-
-Nenhuma credencial de LLM deve ser adicionada ao repositorio. A futura integracao usara variaveis de ambiente ou um gerenciador de segredos no servico que executar a FastAPI.
+A URL padrao da API e `http://127.0.0.1:8000`. A documentacao das rotas pode ser consultada em `http://127.0.0.1:8000/docs`.

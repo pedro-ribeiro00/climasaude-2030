@@ -147,7 +147,6 @@ Nas próximas etapas, novas fontes poderão ser adicionadas ao fluxo, incluindo 
 | Campo | Descricao |
 |---|---|
 | `fonte` | Nome da instituicao de origem |
-| `titulo_pagina` | Titulo HTML da pagina |
 | `url` | Endereco da pagina coletada |
 | `tipo_elemento` | Tag HTML de origem (`h1`, `h2`, `h3`, `p`, `li`) |
 | `texto` | Conteudo textual extraido |
@@ -207,34 +206,27 @@ No TP3, as fontes permanecem adequadas ao problema, mas o caminho dos dados foi 
 | Campo | Tipo esperado | Finalidade |
 |---|---|---|
 | `fonte` | texto | Instituicao responsavel |
-| `titulo_pagina` | texto | Contexto da pagina de origem |
-| `url` | texto | Rastreabilidade e futura citacao |
-| `tipo_elemento` | categoria | Tag HTML que originou o trecho |
+| `url` | texto | Pagina de origem |
+| `tipo_elemento` | texto | Tag HTML que originou o trecho |
 | `texto` | texto | Conteudo extraido |
-| `idioma` | categoria | Preparacao de limpeza e recuperacao multilingue |
-| `hash_conteudo` | texto | Deduplicacao e deteccao de alteracoes |
-| `coletado_em_utc` | data/hora ISO 8601 | Auditoria da atualizacao |
+| `coletado_em_utc` | data/hora | Momento da coleta |
 
 ## 14. Avaliacao de scraping dinamico e Selenium
 
-Foi verificado que o conteudo necessario das paginas atuais esta disponivel no HTML retornado por uma requisicao HTTP comum. Nao ha botao de carregamento, formulario, autenticacao, rolagem infinita nem conteudo dependente de execucao de JavaScript para os trechos usados pelo projeto.
-
-Por isso, Selenium nao e necessario nesta fase. Beautiful Soup foi mantido por ser mais simples, rapido, reproduzivel e adequado as fontes. Selenium sera considerado se uma nova fonte exigir interacao com o navegador ou renderizacao dinamica. A decisao evita adicionar um navegador, driver e pontos extras de falha sem beneficio para a qualidade dos dados.
+As paginas utilizadas disponibilizam o conteudo necessario diretamente no HTML, portanto nao foi necessario utilizar Selenium. Beautiful Soup foi suficiente para esta etapa.
 
 ## 15. Qualidade e limitacoes no TP3
 
-- os registros sao deduplicados por fonte e hash SHA-256 do texto;
-- fonte, URL e momento da coleta permitem auditar cada trecho;
-- a identificacao de idioma e declarada por fonte e devera ser validada em escala maior;
-- a mudanca de estrutura HTML pode reduzir a quantidade coletada e exige monitoramento;
-- a coleta registra o conteudo disponivel no momento e nao substitui versoes oficiais arquivadas;
+- textos repetidos da mesma fonte sao removidos;
+- cada registro preserva fonte, URL e momento da coleta;
+- mudancas no HTML podem exigir ajustes no script;
 - a previsao da Open-Meteo esta sujeita a revisoes e indisponibilidade temporaria;
-- o CSV enviado pelo usuario fica somente na sessao e nao recebe garantia de qualidade;
+- o CSV enviado pelo usuario fica somente na sessao;
 - os dados nao devem ser usados isoladamente para diagnostico ou decisao medica.
 
 ## 16. Preparacao dos dados para LLM
 
-O corpus preserva os metadados necessarios para um fluxo futuro de RAG: limpeza, segmentacao em trechos, embeddings, recuperacao por similaridade e citacao da URL original. O `hash_conteudo` ajudara a evitar reindexacao de trechos inalterados. Antes do uso com um modelo, ainda serao necessarios testes de qualidade, regras contra prompt injection presente nas paginas e avaliacao de fidelidade das respostas.
+Nas proximas etapas, os textos coletados poderao ser enviados a um LLM para gerar resumos e responder perguntas simples. A fonte e a URL poderao ser apresentadas junto das respostas. A FastAPI podera fazer a comunicacao entre o modelo e o Streamlit.
 
 ## 17. Situacao consolidada das fontes
 
