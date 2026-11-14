@@ -237,3 +237,7 @@ Nas proximas etapas, os textos coletados poderao ser enviados a um LLM para gera
 | WHO | Integrada | HTML estatico + Beautiful Soup | Contexto internacional |
 | Upload CSV | Integrado, nao persistente | Interface Streamlit | Exploracao complementar |
 | IBGE | Planejada | API/base publica | Contexto territorial futuro |
+
+## 18. Atualizacao do TP4
+
+A nuvem de palavras volta a ser exibida na pagina Conteudo Web, incluindo textos da coluna `texto` do CSV enviado na sessao. O usuario tambem pode fornecer um texto para resumo pelo modelo local, por meio da FastAPI. A resposta gerada pode conter erros e deve ser conferida com o texto original.

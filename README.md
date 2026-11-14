@@ -8,7 +8,7 @@ Dados meteorologicos e orientacoes sobre calor extremo existem em fontes diferen
 
 A aplicacao tem finalidade educativa. Ela nao substitui alertas oficiais ou orientacao medica.
 
-## Funcionalidades do TP3
+## Funcionalidades do projeto
 
 - aplicacao Streamlit com menu lateral e cinco paginas;
 - consulta de previsao climatica para cinco cidades;
@@ -17,7 +17,8 @@ A aplicacao tem finalidade educativa. Ela nao substitui alertas oficiais ou orie
 - upload, visualizacao e download de CSV;
 - FastAPI integrada ao Streamlit;
 - web scraping com Beautiful Soup;
-- preparacao conceitual para uso futuro de LLM.
+- resumo de texto com modelo de linguagem executado localmente;
+- nuvem de palavras para os textos coletados e enviados por CSV.
 
 ## Paginas da aplicacao
 
@@ -37,6 +38,7 @@ A API possui as seguintes rotas:
 | GET | `/cidades` | Lista as cidades disponiveis |
 | GET | `/previsao/{cidade_id}` | Consulta a previsao de sete dias |
 | POST | `/analises/texto` | Calcula estatisticas dos textos enviados |
+| POST | `/processar_texto` | Gera resumo com o modelo local |
 
 O Streamlit consome a rota GET de previsao e a rota POST de analise textual. A documentacao automatica fica disponivel em `http://127.0.0.1:8000/docs` quando a API esta em execucao.
 
@@ -53,13 +55,13 @@ O script `scripts/scrape_heat_content.py` usa Requests e Beautiful Soup para col
 
 As paginas utilizadas disponibilizam o conteudo necessario diretamente no HTML, portanto nao foi necessario utilizar Selenium. Beautiful Soup foi suficiente para esta etapa.
 
-## Preparacao para LLM
+## Modelo local - TP4
 
-Nas proximas etapas, os textos coletados poderao ser utilizados por um LLM para gerar resumos e responder perguntas simples sobre calor extremo e saude. A FastAPI podera servir como camada de integracao entre o modelo e a interface Streamlit. O plano esta em `03_modeling/llm_plan.md`.
+O modelo `Qwen/Qwen2.5-0.5B-Instruct` gera resumos em portugues a partir de texto fornecido pelo usuario. O modelo e pequeno e aceita instrucoes em portugues; a escolha, suas limitacoes e os custos computacionais estao descritos em `03_modeling/llm_plan.md`. A inferencia usa CPU e arquivos locais, sem servico de nuvem. Confira as respostas na fonte: elas podem conter erros e nao substituem orientacao medica.
 
 ## Como executar
 
-Requer Python 3.9 ou superior.
+Requer Python 3.10 ou superior, espaco livre para dependencias e modelo, e conexao para instalacao e download inicial. A memoria e o tempo de processamento dependem do computador. GPU nao e obrigatoria.
 
 ### 1. Preparar o ambiente
 
@@ -69,13 +71,21 @@ source .venv/bin/activate
 python -m pip install -r requirements.txt
 ```
 
-### 2. Atualizar os dados de scraping
+### 2. Baixar o modelo uma vez
+
+```bash
+python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='Qwen/Qwen2.5-0.5B-Instruct', allow_patterns=['*.json', '*.safetensors', '*.txt', '*.model', '*.tiktoken'])"
+```
+
+Depois do download, a geracao do resumo funciona sem internet. O modelo nao e incluido no repositorio.
+
+### 3. Atualizar os dados de scraping (opcional)
 
 ```bash
 python scripts/scrape_heat_content.py
 ```
 
-### 3. Iniciar a FastAPI
+### 4. Iniciar a FastAPI
 
 No primeiro terminal:
 
@@ -84,7 +94,7 @@ source .venv/bin/activate
 uvicorn api.main:app --reload
 ```
 
-### 4. Iniciar o Streamlit
+### 5. Iniciar o Streamlit
 
 No segundo terminal:
 
@@ -93,7 +103,7 @@ source .venv/bin/activate
 streamlit run app.py
 ```
 
-Para testar o upload, pode ser usado o arquivo `data/sample_upload.csv`.
+Para testar o upload, pode ser usado o arquivo `data/sample_upload.csv`. Na pagina Conteudo Web, cole um texto e clique em Gerar resumo. A primeira geracao pode demorar enquanto o modelo e carregado. O processamento de resumo e local; previsao e scraping precisam de internet.
 
 ## Estrutura principal
 
@@ -130,3 +140,7 @@ O repositorio segue a organizacao do TDSP, com CRISP-DM como referencia compleme
 ## Repositorio
 
 https://github.com/pedro-ribeiro00/climasaude-2030
+
+## Uso de IA e fontes
+
+O ChatGPT (OpenAI) foi utilizado como ferramenta de apoio para planejar, implementar e revisar o TP4. O responsavel pelo projeto deve conferir e compreender o codigo e os resultados. Fonte do modelo: https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct

@@ -188,3 +188,7 @@ As paginas utilizadas disponibilizam o conteudo necessario diretamente no HTML, 
 ### Preparacao para LLM
 
 Nas proximas etapas, os textos coletados poderao ser usados por um LLM para gerar resumos e responder perguntas simples sobre calor e saude. A FastAPI podera fazer a integracao entre o modelo e o Streamlit. As respostas deverao indicar suas fontes e manter finalidade informativa. O plano resumido esta em `03_modeling/llm_plan.md`.
+
+## 16. Atualizacao do escopo - TP4
+
+O projeto passa a oferecer resumo de texto com modelo de linguagem executado localmente, integrado ao Streamlit pela FastAPI. A resposta e informativa, pode conter erros e deve ser conferida na fonte. A nuvem de palavras do TP2 foi restaurada.

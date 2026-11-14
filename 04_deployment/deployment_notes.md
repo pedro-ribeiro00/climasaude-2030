@@ -19,18 +19,7 @@ A aplicacao possui `requirements.txt` na raiz e `app.py` como ponto de entrada,
 permitindo reproduzir o ambiente localmente e preparando o projeto para servicos
 compativeis com Streamlit.
 
-Execucao local:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python scripts/scrape_heat_content.py
-streamlit run app.py
-```
-
-O scraping e executado separadamente da interface e grava os dados em `data/raw/`,
-conforme a organizacao do projeto.
+As instrucoes completas e atualizadas de instalacao, download do modelo e execucao estao no README da raiz. O projeto usa dois processos locais: FastAPI e Streamlit. O scraper e executado separadamente para atualizar `data/raw/`.
 
 ## Execucao do TP3
 
@@ -49,3 +38,7 @@ streamlit run app.py
 ```
 
 A URL padrao da API e `http://127.0.0.1:8000`. A documentacao das rotas pode ser consultada em `http://127.0.0.1:8000/docs`.
+
+## Execucao do TP4
+
+Apos baixar o modelo uma vez, o resumo e gerado localmente por meio da rota `/processar_texto`, sem conexao com servico externo. Para os comandos atualizados e detalhes de hardware, consulte o README e `03_modeling/llm_plan.md`.

@@ -4,12 +4,15 @@ from pathlib import Path
 
 import pandas as pd
 import streamlit as st
+from wordcloud import WordCloud
 
 from climasaude.api_client import (
     APIIndisponivel,
     analisar_textos_api,
     obter_previsao_api,
+    resumir_texto_api,
 )
+from climasaude.analysis import STOPWORDS
 from climasaude.config import CIDADES
 
 
@@ -64,7 +67,7 @@ def render_inicio() -> None:
 1. A **FastAPI** centraliza a consulta climatica e a analise de textos.
 2. O **Streamlit** consome essa API e apresenta os resultados em paginas independentes.
 3. O **Beautiful Soup** coleta conteudo publico e preserva fonte, URL e data da coleta.
-4. Os arquivos tratados ficam prontos para exploracao e futura integracao com LLM.
+4. Um modelo local pode gerar resumos de textos informados pelo usuario.
 """
     )
     st.info(
@@ -177,6 +180,27 @@ def render_conteudo() -> None:
         st.subheader("Palavras mais frequentes")
         st.bar_chart(frequencias.set_index("palavra"))
 
+    try:
+        nuvem = WordCloud(width=1200, height=500, background_color="white", stopwords=STOPWORDS, collocations=False).generate(" ".join(textos))
+        st.subheader("Nuvem de palavras")
+        st.image(nuvem.to_array())
+    except ValueError:
+        st.info("Nao ha palavras suficientes para criar a nuvem.")
+
+    st.subheader("Resumo com modelo local")
+    texto_resumo = st.text_area("Texto para resumir", max_chars=6000, help="Cole um trecho das fontes ou outro texto.")
+    if st.button("Gerar resumo"):
+        if not texto_resumo.strip():
+            st.warning("Informe um texto para resumir.")
+        else:
+            try:
+                with st.spinner("Gerando resumo no computador..."):
+                    resposta = resumir_texto_api(texto_resumo)
+                st.write(resposta["resultado"])
+                st.caption("Revise o resumo e consulte a fonte original. O conteúdo é informativo.")
+            except APIIndisponivel as exc:
+                st.error(str(exc))
+
     st.download_button(
         "Baixar conteudo filtrado",
         data=_csv_bytes(filtrado),
@@ -240,11 +264,10 @@ def render_projeto() -> None:
         "Paginas publicas → Beautiful Soup → CSV/TXT → FastAPI → Streamlit",
         language="text",
     )
-    st.subheader("Preparacao para LLM")
+    st.subheader("Modelo local")
     st.write(
-        "Nas proximas etapas, os textos coletados poderao ser usados por um LLM "
-        "para gerar resumos e responder perguntas simples sobre calor e saude. "
-        "A FastAPI podera integrar o modelo ao Streamlit."
+        "O modelo local gera resumos de textos pela FastAPI. "
+        "Confira as respostas nas fontes originais."
     )
     st.markdown(
         """

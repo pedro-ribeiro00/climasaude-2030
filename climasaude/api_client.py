@@ -36,3 +36,17 @@ def analisar_textos_api(textos: list[str], limite: int = 12) -> dict:
         return resposta.json()
     except (requests.RequestException, ValueError) as exc:
         raise APIIndisponivel(_mensagem_erro(exc)) from exc
+
+
+def resumir_texto_api(texto: str) -> dict:
+    try:
+        resposta = requests.post(f"{API_URL}/processar_texto", json={"texto": texto}, timeout=300)
+        if not resposta.ok:
+            try:
+                detalhe = resposta.json().get("detail", "Erro ao processar texto")
+            except ValueError:
+                detalhe = "Erro ao processar texto"
+            raise APIIndisponivel(f"API ({resposta.status_code}): {detalhe}")
+        return resposta.json()
+    except (requests.RequestException, ValueError) as exc:
+        raise APIIndisponivel(_mensagem_erro(exc)) from exc
