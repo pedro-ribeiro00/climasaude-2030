@@ -118,6 +118,7 @@ climasaude-2030/
 │   ├── analysis.py
 │   ├── api_client.py
 │   ├── config.py
+│   ├── llm.py
 │   ├── ui.py
 │   └── weather.py
 ├── scripts/
