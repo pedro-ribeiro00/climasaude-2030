@@ -14,7 +14,7 @@ from climasaude.tp5 import gerar_sintese
 app = FastAPI(
     title="ClimaSaude 2030 API",
     description="API de apoio ao monitoramento de clima, calor e saude.",
-    version="4.0.0",
+    version="5.0.0",
 )
 
 
@@ -144,6 +144,8 @@ class SinteseResposta(BaseModel):
 @app.post("/sintese", tags=["analise"], response_model=SinteseResposta)
 def criar_sintese(entrada: SinteseEntrada) -> dict:
     textos = [texto.strip() for texto in entrada.textos if texto.strip()]
+    if not entrada.contexto.strip():
+        raise HTTPException(status_code=422, detail="Informe um contexto climático válido.")
     if not textos or len("".join(textos)) > 40000:
         raise HTTPException(status_code=422, detail="Informe entre 1 e 40.000 caracteres de texto válido.")
     try:

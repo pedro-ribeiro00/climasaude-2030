@@ -1,0 +1,388 @@
+[
+  {
+    "case": "Inicio",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [
+      {
+        "Cidades cadastradas": "5"
+      },
+      {
+        "Fontes Web": "2"
+      },
+      {
+        "Horizonte da previsao": "7 dias"
+      }
+    ],
+    "captions": [
+      "Dados climaticos e informacao publica para compreender o calor extremo"
+    ]
+  },
+  {
+    "case": "render_clima",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [
+      {
+        "Temp. maxima": "28.6 °C"
+      },
+      {
+        "Sensacao maxima": "33.4 °C"
+      },
+      {
+        "UV maximo": "8.8"
+      },
+      {
+        "Precipitacao": "10.7 mm"
+      }
+    ],
+    "captions": [
+      "Previsao climatica fornecida pela FastAPI do projeto"
+    ]
+  },
+  {
+    "case": "clima Rio de Janeiro - RJ",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [
+      {
+        "Temp. maxima": "32.4 °C"
+      },
+      {
+        "Sensacao maxima": "40.9 °C"
+      },
+      {
+        "UV maximo": "8.8"
+      },
+      {
+        "Precipitacao": "0.4 mm"
+      }
+    ],
+    "captions": [
+      "Previsao climatica fornecida pela FastAPI do projeto"
+    ]
+  },
+  {
+    "case": "clima Belo Horizonte - MG",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [
+      {
+        "Temp. maxima": "26.6 °C"
+      },
+      {
+        "Sensacao maxima": "32.4 °C"
+      },
+      {
+        "UV maximo": "9.6"
+      },
+      {
+        "Precipitacao": "18.1 mm"
+      }
+    ],
+    "captions": [
+      "Previsao climatica fornecida pela FastAPI do projeto"
+    ]
+  },
+  {
+    "case": "clima Brasilia - DF",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [
+      {
+        "Temp. maxima": "26.2 °C"
+      },
+      {
+        "Sensacao maxima": "30.6 °C"
+      },
+      {
+        "UV maximo": "9.3"
+      },
+      {
+        "Precipitacao": "3.2 mm"
+      }
+    ],
+    "captions": [
+      "Previsao climatica fornecida pela FastAPI do projeto"
+    ]
+  },
+  {
+    "case": "clima Porto Alegre - RS",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [
+      {
+        "Temp. maxima": "29.8 °C"
+      },
+      {
+        "Sensacao maxima": "34.8 °C"
+      },
+      {
+        "UV maximo": "9.2"
+      },
+      {
+        "Precipitacao": "0.0 mm"
+      }
+    ],
+    "captions": [
+      "Previsao climatica fornecida pela FastAPI do projeto"
+    ]
+  },
+  {
+    "case": "render_conteudo",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [
+      {
+        "Blocos coletados": "61"
+      },
+      {
+        "Fontes": "2"
+      },
+      {
+        "Palavras analisadas": "2003"
+      }
+    ],
+    "captions": [
+      "Conteudo coletado com Beautiful Soup e analisado pela FastAPI"
+    ]
+  },
+  {
+    "case": "Resumo vazio",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [
+      {
+        "Blocos coletados": "61"
+      },
+      {
+        "Fontes": "2"
+      },
+      {
+        "Palavras analisadas": "2003"
+      }
+    ],
+    "captions": [
+      "Conteudo coletado com Beautiful Soup e analisado pela FastAPI"
+    ]
+  },
+  {
+    "case": "Nenhuma fonte em Conteudo Web",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [],
+    "captions": [
+      "Conteudo coletado com Beautiful Soup e analisado pela FastAPI"
+    ]
+  },
+  {
+    "case": "render_arquivos",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [],
+    "captions": [
+      "Envio, exploracao e download de arquivos CSV"
+    ]
+  },
+  {
+    "case": "CSV na sessão",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [],
+    "captions": [
+      "Envio, exploracao e download de arquivos CSV"
+    ]
+  },
+  {
+    "case": "Limpar CSV",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [],
+    "captions": [
+      "Envio, exploracao e download de arquivos CSV"
+    ]
+  },
+  {
+    "case": "render_projeto",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [],
+    "captions": [
+      "Escopo, arquitetura e proximos passos"
+    ]
+  },
+  {
+    "case": "render_dashboard",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [
+      {
+        "Maior temperatura prevista": "29.6 °C"
+      },
+      {
+        "Maior sensação térmica": "34.4 °C"
+      },
+      {
+        "Maior índice UV": "9.8"
+      },
+      {
+        "Trechos coletados": "61"
+      },
+      {
+        "Fontes selecionadas": "2"
+      }
+    ],
+    "captions": [
+      "Painel final: clima e saúde",
+      "Fonte: Open-Meteo. São previsões, sujeitas a atualização.",
+      "Coleta dos textos (UTC): 2026-11-23T23:31:23.066944+00:00, 2026-11-23T23:31:27.235323+00:00",
+      "Fontes originais: Ministerio da Saude: https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/o/ondas-de-calor | World Health Organization: https://www.who.int/news-room/fact-sheets/detail/climate-change-heat-and-health"
+    ]
+  },
+  {
+    "case": "Gerar síntese Sao Paulo - SP / Ministerio da Saude",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [
+      {
+        "Maior temperatura prevista": "29.6 °C"
+      },
+      {
+        "Maior sensação térmica": "34.4 °C"
+      },
+      {
+        "Maior índice UV": "9.8"
+      },
+      {
+        "Trechos coletados": "13"
+      },
+      {
+        "Fontes selecionadas": "1"
+      }
+    ],
+    "captions": [
+      "Painel final: clima e saúde",
+      "Fonte: Open-Meteo. São previsões, sujeitas a atualização.",
+      "13 trechos em 1 blocos. Síntese extrativa com Qwen local; confira a fonte e a data das orientações. A previsão não determina a existência de uma onda de calor.",
+      "Coleta dos textos (UTC): 2026-11-23T23:31:23.066944+00:00",
+      "Fontes originais: Ministerio da Saude: https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/o/ondas-de-calor"
+    ],
+    "seconds": 8.543,
+    "markdown": [
+      "O Qwen local seleciona trechos relevantes considerando a previsão exibida. A síntese extrativa preserva o texto e o idioma das fontes, evitando acrescentar recomendações ou alertas gerados pelo modelo.",
+      "**Previsão Open-Meteo (contexto recebido)**\n\nCidade: Sao Paulo - SP. 23/11/2026: temperatura máxima 28.6 °C, sensação térmica 33.4 °C, UV 8.85 | 24/11/2026: temperatura máxima 29.6 °C, sensação térmica 34.4 °C, UV 9.85 | 25/11/2026: temperatura máxima 29.0 °C, sensação térmica 33.7 °C, UV 9.6 | 26/11/2026: temperatura máxima 23.7 °C, sensação térmica 26.7 °C, UV 1.55 | 27/11/2026: temperatura máxima 21.0 °C, sensação térmica 21.3 °C, UV 4.1 | 28/11/2026: temperatura máxima 23.6 °C, sensação térmica 25.8 °C, UV 6.3 | 29/11/2026: temperatura máxima 23.6 °C, sensação térmica 24.2 °C, UV 6.05\n\n**Síntese extrativa — trechos selecionados pelo Qwen**\n\n- Fonte: Ministerio da Saude. O Brasil está novamente em alerta para onda de calor , segundo informações do Instituto Nacional de Meteorologia - INMET . As temperaturas devem ficar acima da média em quase todo o país. Em alguns municípios, os termômetros devem registrar mais de 40°C . Há ainda uma associação com baixos índices de umidade relativa do ar, especialmente na região central do Brasil."
+    ]
+  },
+  {
+    "case": "Síntese preservada após rerun Sao Paulo - SP",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [
+      {
+        "Maior temperatura prevista": "29.6 °C"
+      },
+      {
+        "Maior sensação térmica": "34.4 °C"
+      },
+      {
+        "Maior índice UV": "9.8"
+      },
+      {
+        "Trechos coletados": "13"
+      },
+      {
+        "Fontes selecionadas": "1"
+      }
+    ],
+    "captions": [
+      "Painel final: clima e saúde",
+      "Fonte: Open-Meteo. São previsões, sujeitas a atualização.",
+      "13 trechos em 1 blocos. Síntese extrativa com Qwen local; confira a fonte e a data das orientações. A previsão não determina a existência de uma onda de calor.",
+      "Coleta dos textos (UTC): 2026-11-23T23:31:23.066944+00:00",
+      "Fontes originais: Ministerio da Saude: https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/o/ondas-de-calor"
+    ]
+  },
+  {
+    "case": "Gerar síntese Rio de Janeiro - RJ / World Health Organization",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [
+      {
+        "Maior temperatura prevista": "32.5 °C"
+      },
+      {
+        "Maior sensação térmica": "40.9 °C"
+      },
+      {
+        "Maior índice UV": "9.2"
+      },
+      {
+        "Trechos coletados": "48"
+      },
+      {
+        "Fontes selecionadas": "1"
+      }
+    ],
+    "captions": [
+      "Painel final: clima e saúde",
+      "Fonte: Open-Meteo. São previsões, sujeitas a atualização.",
+      "48 trechos em 3 blocos. Síntese extrativa com Qwen local; confira a fonte e a data das orientações. A previsão não determina a existência de uma onda de calor.",
+      "Coleta dos textos (UTC): 2026-11-23T23:31:27.235323+00:00",
+      "Fontes originais: World Health Organization: https://www.who.int/news-room/fact-sheets/detail/climate-change-heat-and-health"
+    ],
+    "seconds": 10.452,
+    "markdown": [
+      "O Qwen local seleciona trechos relevantes considerando a previsão exibida. A síntese extrativa preserva o texto e o idioma das fontes, evitando acrescentar recomendações ou alertas gerados pelo modelo.",
+      "**Previsão Open-Meteo (contexto recebido)**\n\nCidade: Rio de Janeiro - RJ. 23/11/2026: temperatura máxima 32.4 °C, sensação térmica 40.9 °C, UV 8.8 | 24/11/2026: temperatura máxima 30.3 °C, sensação térmica 37.5 °C, UV 9.2 | 25/11/2026: temperatura máxima 32.5 °C, sensação térmica 38.7 °C, UV 7.3 | 26/11/2026: temperatura máxima 26.7 °C, sensação térmica 31.7 °C, UV 4.6 | 27/11/2026: temperatura máxima 23.7 °C, sensação térmica 24.6 °C, UV 4.5 | 28/11/2026: temperatura máxima 23.0 °C, sensação térmica 26.5 °C, UV 8.85 | 29/11/2026: temperatura máxima 26.2 °C, sensação térmica 30.6 °C, UV 6.55\n\n**Síntese extrativa — trechos selecionados pelo Qwen**\n\n- Fonte: World Health Organization. Heat is an important environmental and occupational health hazard. Heat stress is a leading cause of weather-related deaths and can exacerbate underlying illnesses including cardiovascular disease, diabetes, mental health, asthma, and can increase the risk of accidents and transmission of some infectious diseases. Heatstroke is a medical emergency with a high-case fatality rate.\n\n- Fonte: World Health Organization. The body’s inability to regulate internal temperature and eliminate heat gain in such conditions increases the risk of heat exhaustion and heatstroke. The strain put on the body as it tries to cool itself also stresses the heart and kidneys. As a result, heat extremes can worsen health risks from chronic conditions (cardiovascular, mental, respiratory and diabetes related conditions) and cause acute kidney injury.\n\n- Fonte: World Health Organization. Mitigating climate change by reducing greenhouse gas emissions is imperative and urgent to limit the magnitude of human costs from extreme heat. WHO is addressing climate change through the Alliance for Transformational Change in Climate and Health (ATACH) , as well as country support of technical and policy resources to help the health sector and communities adapt to the risks of climate change."
+    ]
+  },
+  {
+    "case": "Síntese preservada após rerun Rio de Janeiro - RJ",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [
+      {
+        "Maior temperatura prevista": "32.5 °C"
+      },
+      {
+        "Maior sensação térmica": "40.9 °C"
+      },
+      {
+        "Maior índice UV": "9.2"
+      },
+      {
+        "Trechos coletados": "48"
+      },
+      {
+        "Fontes selecionadas": "1"
+      }
+    ],
+    "captions": [
+      "Painel final: clima e saúde",
+      "Fonte: Open-Meteo. São previsões, sujeitas a atualização.",
+      "48 trechos em 3 blocos. Síntese extrativa com Qwen local; confira a fonte e a data das orientações. A previsão não determina a existência de uma onda de calor.",
+      "Coleta dos textos (UTC): 2026-11-23T23:31:27.235323+00:00",
+      "Fontes originais: World Health Organization: https://www.who.int/news-room/fact-sheets/detail/climate-change-heat-and-health"
+    ]
+  },
+  {
+    "case": "Nenhuma fonte no Painel final",
+    "exceptions": [],
+    "errors": [],
+    "metrics": [
+      {
+        "Maior temperatura prevista": "32.5 °C"
+      },
+      {
+        "Maior sensação térmica": "40.9 °C"
+      },
+      {
+        "Maior índice UV": "9.2"
+      }
+    ],
+    "captions": [
+      "Painel final: clima e saúde",
+      "Fonte: Open-Meteo. São previsões, sujeitas a atualização."
+    ]
+  }
+]

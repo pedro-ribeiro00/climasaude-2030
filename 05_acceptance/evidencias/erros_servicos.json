@@ -1,0 +1,23 @@
+[
+  {
+    "case": "Timeout externo induzido, sem resposta climática simulada",
+    "status": 502,
+    "response": {
+      "detail": "A fonte climatica externa nao respondeu corretamente"
+    }
+  },
+  {
+    "rota": "/processar_texto",
+    "status": 503,
+    "response": {
+      "detail": "Modelo local indisponivel. Instale as dependencias e baixe o modelo conforme o README."
+    }
+  },
+  {
+    "rota": "/sintese",
+    "status": 503,
+    "response": {
+      "detail": "Modelo local indisponível."
+    }
+  }
+]

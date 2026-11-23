@@ -1,0 +1,84 @@
+{
+  "situacao": "Tentativa intermediária reprovada; não representa a versão extrativa final.",
+  "motivo": "Emergência climática não sustentada pela previsão em SP; saída longa incompleta na OMS.",
+  "resultados": [
+    {
+      "method": "POST",
+      "path": "/sintese",
+      "status": 422,
+      "expected": 422,
+      "seconds": 0.001,
+      "response": {
+        "detail": [
+          {
+            "type": "too_short",
+            "loc": [
+              "body",
+              "textos"
+            ],
+            "msg": "List should have at least 1 item after validation, not 0",
+            "input": [],
+            "ctx": {
+              "field_type": "List",
+              "min_length": 1,
+              "actual_length": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/sintese",
+      "status": 422,
+      "expected": 422,
+      "seconds": 0.001,
+      "response": {
+        "detail": "Informe entre 1 e 40.000 caracteres de texto válido."
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/sintese",
+      "status": 422,
+      "expected": 422,
+      "seconds": 0.001,
+      "response": {
+        "detail": "Informe um contexto climático válido."
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/sintese",
+      "status": 422,
+      "expected": 422,
+      "seconds": 0.002,
+      "response": {
+        "detail": "Informe entre 1 e 40.000 caracteres de texto válido."
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/sintese",
+      "status": 200,
+      "expected": 200,
+      "seconds": 41.352,
+      "response": {
+        "resultado": "(1) Previsão Climática Informada:\n\nA previsão climática informada para São Paulo, no estado de São Paulo, em 2026-11-23, foi de temperaturas extremamente altas, com máxima de 28.6°C e sensação térmica de 33.4°C. As temperaturas ultrapassaram os níveis esperados para esta data, indicando uma situação de emergência climática.\n\n(2) Fontes Públicas sobre Calor e Saúde:\n\nAs fontes públicas mencionadas na previsão climática informada sugerem que a temperatura máxima em São Paulo em 2026-11-23 foi de 28.6°C, com uma sensação térmica de 33.4°C. Essa temperatura ultrapassou os níveis esperados para essa data, indicando uma situação de emergência climática.\n\n(3) Conclusão Educacional:\n\nA previsão climática informada pela Oresinho de calor sugere uma situação de emergência climática em São Paulo em 2026-11-23, com temperaturas extremamente altas e sensações térmicas muito acima dos níveis esperados. As fontes públicas mencionadas sugerem que a temperatura máxima em São Paulo em 2026-11-23 foi de 28.6°C, com uma sensação térmica de 33.4°C. Esta situação de emergência climática deve ser tomada como uma preocupação importante para a população local, especialmente para pessoas com condições de saúde preexistentes, como crianças, idosos e gestantes.",
+        "modelo": "Qwen/Qwen2.5-0.5B-Instruct",
+        "total_trechos": 13,
+        "total_blocos": 1
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/sintese",
+      "status": 500,
+      "expected": 200,
+      "seconds": 60.444,
+      "response": {
+        "detail": "Não foi possível gerar a síntese."
+      }
+    }
+  ]
+}

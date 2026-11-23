@@ -2,39 +2,27 @@
 
 [Ministerio da Saude] Essas ondas são particularmente perigosas em áreas urbanas devido ao efeito de "ilha de calor", onde a concentração de edifícios, concreto e asfalto retém mais calor, elevando ainda mais as temperaturas.
 
-[Ministerio da Saude] O Brasil está novamente em alerta para onda de calor, segundo informações do Instituto Nacional de Meteorologia - INMET. As temperaturas devem ficar acima da média em quase todo o país. Em alguns municípios, os termômetros devem registrar mais de 40°C. Há ainda uma associação com baixos índices de umidade relativa do ar, especialmente na região central do Brasil.
+[Ministerio da Saude] O Brasil está novamente em alerta para onda de calor , segundo informações do Instituto Nacional de Meteorologia - INMET . As temperaturas devem ficar acima da média em quase todo o país. Em alguns municípios, os termômetros devem registrar mais de 40°C . Há ainda uma associação com baixos índices de umidade relativa do ar, especialmente na região central do Brasil.
 
-[Ministerio da Saude] Essas condições podem impactar a saúde de toda a população, em especial os mais vulneráveis — como idosos, crianças, pessoas com problemas renais, cardíacos, respiratórios ou de circulação, diabéticos, gestantes e população em situação de rua. Por isso, o Ministério da Saúde preparou um guia com informações básicas sobre como lidar com as temperaturas extremas.
+[Ministerio da Saude] Essas condições podem impactar a saúde de toda a população, em especial os mais vulneráveis — como idosos, crianças, pessoas com problemas renais, cardíacos, respiratórios ou de circulação, diabéticos, gestantes e população em situação de rua . Por isso, o Ministério da Saúde preparou um guia com informações básicas sobre como lidar com as temperaturas extremas.
 
 [Ministerio da Saude] Os principais sinais de alerta são transpiração excessiva, fraqueza, tontura, náuseas, dor de cabeça, cãibras musculares e diarreia. Nestes casos, deve-se procurar a unidade de saúde mais próxima para uma avaliação com um profissional. Entenda quais as precauções necessárias e cuide-se!
 
-[Ministerio da Saude] As ondas de calor têm uma série de impactos negativos na saúde, que podem variar de desconforto leve a condições potencialmente fatais:
+[Ministerio da Saude] Utilizar ventiladores e ar-condicionado sempre que possível. Ambientes como centros comunitários e shoppings podem servir como refúgio durante os horários mais quentes do dia.
 
-[Ministerio da Saude] Desidratação: A exposição prolongada ao calor pode levar à perda excessiva de líquidos e eletrólitos, resultando em desidratação, que, se não tratada, pode evoluir para condições mais graves.
+[Ministerio da Saude] Pessoas com condições de saúde preexistentes devem monitorar rigorosamente seus sintomas durante ondas de calor e ajustar medicações conforme orientação médica.
 
-[Ministerio da Saude] Insolação e Golpe de Calor: O golpe de calor é uma emergência médica que ocorre quando o corpo é incapaz de regular sua temperatura interna, levando a sintomas como confusão, convulsões e perda de consciência. Se não tratada rapidamente, pode ser fatal.
+[Ministerio da Saude] Cuidado com crianças, idosos e gestantes
 
-[Ministerio da Saude] Agravamento de doenças crônicas: Pacientes com condições cardíacas e respiratórias são particularmente vulneráveis durante ondas de calor, pois o esforço adicional para manter a temperatura corporal pode sobrecarregar o coração e os pulmões.
+[Ministerio da Saude] Esses grupos são especialmente vulneráveis ao calor extremo e precisam de atenção redobrada, incluindo a oferta constante de líquidos e a manutenção em ambientes frescos.
 
-[Ministerio da Saude] Problemas de saúde mental: A exposição prolongada ao calor extremo também pode agravar condições de saúde mental, como ansiedade e depressão, e aumentar o risco de violência e comportamento agressivo.
+[Ministerio da Saude] Vestimenta adequada : Usar roupas leves, de cores claras e de tecidos que permitem a transpiração.
 
-[Ministerio da Saude] Para mitigar os impactos das ondas de calor, são recomendadas as seguintes orientações:
+[Ministerio da Saude] Hidratação constante : Beber água regularmente, mesmo quando não se sente sede, e evitar bebidas alcoólicas ou com cafeína, que podem aumentar a desidratação.
 
-[Ministerio da Saude] Manutenção de ambientes frescos Utilizar ventiladores e ar-condicionado sempre que possível. Ambientes como centros comunitários e shoppings podem servir como refúgio durante os horários mais quentes do dia.
+[Ministerio da Saude] Rotina ajustada : Planejar atividades ao ar livre para os horários mais frescos do dia, como a manhã cedo ou o final da tarde.
 
-[Ministerio da Saude] Monitoramento da saúde Pessoas com condições de saúde preexistentes devem monitorar rigorosamente seus sintomas durante ondas de calor e ajustar medicações conforme orientação médica.
-
-[Ministerio da Saude] Cuidado com crianças, idosos e gestantes Esses grupos são especialmente vulneráveis ao calor extremo e precisam de atenção redobrada, incluindo a oferta constante de líquidos e a manutenção em ambientes frescos.
-
-[Ministerio da Saude] Além das medidas gerais de saúde pública, cuidados pessoais são fundamentais:
-
-[Ministerio da Saude] Vestimenta adequada: Usar roupas leves, de cores claras e de tecidos que permitem a transpiração.
-
-[Ministerio da Saude] Hidratação constante: Beber água regularmente, mesmo quando não se sente sede, e evitar bebidas alcoólicas ou com cafeína, que podem aumentar a desidratação.
-
-[Ministerio da Saude] Rotina ajustada: Planejar atividades ao ar livre para os horários mais frescos do dia, como a manhã cedo ou o final da tarde.
-
-[Ministerio da Saude] Alimentação leve: Preferir alimentos leves e de fácil digestão, como frutas e saladas, evitando refeições pesadas que exigem mais energia para
+[Ministerio da Saude] Alimentação leve : Preferir alimentos leves e de fácil digestão, como frutas e saladas, evitando refeições pesadas que exigem mais energia para serem digeridas.
 
 [World Health Organization] Heat is an important environmental and occupational health hazard. Heat stress is a leading cause of weather-related deaths and can exacerbate underlying illnesses including cardiovascular disease, diabetes, mental health, asthma, and can increase the risk of accidents and transmission of some infectious diseases. Heatstroke is a medical emergency with a high-case fatality rate.
 

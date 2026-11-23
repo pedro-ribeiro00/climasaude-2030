@@ -10,7 +10,7 @@ A aplicacao tem finalidade educativa. Ela nao substitui alertas oficiais ou orie
 
 ## Funcionalidades do projeto
 
-- aplicacao Streamlit com menu lateral e cinco paginas;
+- aplicacao Streamlit com menu lateral e seis paginas;
 - consulta de previsao climatica para cinco cidades;
 - visualizacao e download dos dados climaticos;
 - exibicao e analise de conteudo coletado da Web;
@@ -153,8 +153,28 @@ O ChatGPT (OpenAI) foi utilizado como ferramenta de apoio para planejar, impleme
 
 ## TP5 - Painel final e síntese automática
 
-Na página **Painel final**, selecione uma cidade e as fontes de texto, depois clique em **Gerar síntese**. Os textos vêm diretamente do CSV gerado pelo scraping. O modelo Qwen local processa os trechos em blocos e produz uma síntese relacionada aos indicadores de sete dias da Open-Meteo. Não é necessário colar textos.
+Na página **Painel final**, selecione uma cidade e as fontes de texto, depois clique em **Gerar síntese**. Os textos vêm diretamente do CSV gerado pelo scraping. O Qwen local recebe o contexto climático e seleciona trechos dos blocos coletados. A síntese é extrativa: preserva as frases e o idioma das fontes. Os números da previsão são reproduzidos do contexto enviado pelo painel, sem estimativa pelo LLM. Essa escolha evita alertas e recomendações inventados na geração livre com o modelo pequeno. Não é necessário colar textos.
 
 O scraper não roda automaticamente na abertura do painel. Para atualizar o conteúdo, execute `python scripts/scrape_heat_content.py`. Os resumos são educativos, podem conter erros e não substituem alertas oficiais ou orientação médica.
 
-Os documentos finais TDSP estão nas pastas 01_business_understanding, 02_data_ingest_understanding, 03_modeling, 04_deployment e 05_acceptance. Os testes finais de inferência devem ser realizados com os pesos do modelo instalados.
+Os documentos finais TDSP estão nas pastas 01_business_understanding, 02_data_ingest_understanding, 03_modeling, 04_deployment e 05_acceptance. A validação real e suas limitações estão em `05_acceptance/validacao_tp5.md`; as respostas e tempos medidos estão em `05_acceptance/evidencias/`.
+
+## Repetir os testes reais do TP5
+
+Com dependências e pesos instalados, execute na raiz (cada script inicia e encerra sua API de teste):
+
+```bash
+python scripts/validar_tp5.py
+python scripts/validar_interface_tp5.py
+```
+
+Os testes fazem consultas reais à Open-Meteo e inferência local com Qwen; precisam de internet para a previsão. O segundo usa `streamlit.testing.v1.AppTest` para executar páginas e interações, sem substituir inspeção visual no navegador. A API de teste usa a porta 8000, que precisa estar livre. Não execute os scripts simultaneamente em um computador convencional.
+
+Em máquinas sem GPU, instale primeiro o PyTorch CPU para evitar baixar dependências CUDA desnecessárias:
+
+```bash
+python -m pip install 'torch>=2.2,<3' --index-url https://download.pytorch.org/whl/cpu
+python -m pip install -r requirements.txt
+```
+
+O padrão é usar duas threads de CPU para a inferência. Ajuste com `CLIMASAUDE_CPU_THREADS` se necessário. A rota legada `/processar_texto` mantém o resumo abstrativo e pode ter erros factuais; o painel TP5 utiliza `/sintese`, com seleção extrativa verificável.

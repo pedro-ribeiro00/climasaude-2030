@@ -259,7 +259,7 @@ def render_projeto() -> None:
         "O projeto os organiza em uma interface acessivel, com rastreabilidade e "
         "separacao entre apresentacao, API e fontes externas."
     )
-    st.subheader("Arquitetura do TP3")
+    st.subheader("Arquitetura do projeto")
     st.code(
         "Open-Meteo → FastAPI → Streamlit\n"
         "Paginas publicas → Beautiful Soup → CSV/TXT → FastAPI → Streamlit",
@@ -326,7 +326,13 @@ def render_dashboard() -> None:
     st.dataframe(filtrado[["fonte", "texto", "url"]].head(10), hide_index=True, width="stretch")
 
     st.subheader("Síntese automática com IA")
-    st.write("O modelo local resume os textos coletados e relaciona o conteúdo com a previsão exibida.")
+    st.write(
+        "O Qwen local seleciona trechos relevantes considerando a previsão exibida. "
+        "A síntese extrativa preserva o texto e o idioma das fontes, evitando acrescentar "
+        "recomendações ou alertas gerados pelo modelo."
+    )
+    chave_sintese = (cidade_nome, tuple(escolhidas), previsao["gerado_em_utc"],
+                     tuple(filtrado["coletado_em_utc"].astype(str)))
     if st.button("Gerar síntese", type="primary"):
         linhas = []
         for dia in dias.itertuples(index=False):
@@ -340,13 +346,23 @@ def render_dashboard() -> None:
         try:
             with st.spinner("Analisando os trechos com o modelo local..."):
                 resposta = resumir_conteudo_api(textos, contexto)
-            st.write(resposta["resultado"])
-            st.caption(
-                f"{resposta['total_trechos']} trechos em {resposta['total_blocos']} blocos. "
-                "Síntese educativa; consulte as fontes originais e os alertas oficiais."
-            )
+            st.session_state["painel_sintese"] = (chave_sintese, resposta)
         except APIIndisponivel as exc:
             st.error(str(exc))
+
+    salvo = st.session_state.get("painel_sintese")
+    if salvo and salvo[0] == chave_sintese:
+        resposta = salvo[1]
+        st.write(resposta["resultado"])
+        st.caption(
+            f"{resposta['total_trechos']} trechos em {resposta['total_blocos']} blocos. "
+            "Síntese extrativa com Qwen local; confira a fonte e a data das orientações. "
+            "A previsão não determina a existência de uma onda de calor."
+        )
+
+    st.caption("Coleta dos textos (UTC): " + ", ".join(
+        sorted(filtrado["coletado_em_utc"].astype(str).unique())
+    ))
 
     st.caption("Fontes originais: " + " | ".join(
         f"{linha.fonte}: {linha.url}" for linha in
