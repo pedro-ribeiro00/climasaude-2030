@@ -50,3 +50,22 @@ def resumir_texto_api(texto: str) -> dict:
         return resposta.json()
     except (requests.RequestException, ValueError) as exc:
         raise APIIndisponivel(_mensagem_erro(exc)) from exc
+
+
+def resumir_conteudo_api(textos: list[str], contexto: str) -> dict:
+    """Envia os textos coletados para síntese automática."""
+    try:
+        resposta = requests.post(
+            f"{API_URL}/sintese",
+            json={"textos": textos, "contexto": contexto},
+            timeout=300,
+        )
+        if not resposta.ok:
+            try:
+                detalhe = resposta.json().get("detail", "Erro ao gerar síntese")
+            except ValueError:
+                detalhe = "Erro ao gerar síntese"
+            raise APIIndisponivel(f"API ({resposta.status_code}): {detalhe}")
+        return resposta.json()
+    except (requests.RequestException, ValueError) as exc:
+        raise APIIndisponivel(_mensagem_erro(exc)) from exc

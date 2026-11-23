@@ -8,6 +8,7 @@ from climasaude.analysis import analisar_textos
 from climasaude.config import CIDADES
 from climasaude.weather import obter_previsao
 from climasaude.llm import MODEL_ID, carregar_modelo, resumir_texto
+from climasaude.tp5 import gerar_sintese
 
 
 app = FastAPI(
@@ -126,3 +127,36 @@ def processar_texto(entrada: TextoEntrada) -> dict:
     except (RuntimeError, ValueError) as exc:
         raise HTTPException(status_code=500, detail="Nao foi possivel gerar o resumo com o modelo local.") from exc
     return {"tipo_analise": "resumo", "texto_original": texto, "resultado": resumo, "modelo": MODEL_ID}
+
+
+class SinteseEntrada(BaseModel):
+    textos: list[str] = Field(min_length=1, max_length=150)
+    contexto: str = Field(min_length=1, max_length=1200)
+
+
+class SinteseResposta(BaseModel):
+    resultado: str
+    modelo: str
+    total_trechos: int
+    total_blocos: int
+
+
+@app.post("/sintese", tags=["analise"], response_model=SinteseResposta)
+def criar_sintese(entrada: SinteseEntrada) -> dict:
+    textos = [texto.strip() for texto in entrada.textos if texto.strip()]
+    if not textos or len("".join(textos)) > 40000:
+        raise HTTPException(status_code=422, detail="Informe entre 1 e 40.000 caracteres de texto válido.")
+    try:
+        carregar_modelo()
+    except (OSError, ImportError, RuntimeError, ValueError) as exc:
+        raise HTTPException(status_code=503, detail="Modelo local indisponível.") from exc
+    try:
+        resultado, blocos = gerar_sintese(textos, entrada.contexto)
+    except (RuntimeError, ValueError) as exc:
+        raise HTTPException(status_code=500, detail="Não foi possível gerar a síntese.") from exc
+    return {
+        "resultado": resultado,
+        "modelo": MODEL_ID,
+        "total_trechos": len(textos),
+        "total_blocos": blocos,
+    }

@@ -8,6 +8,7 @@ from climasaude.ui import (
     render_conteudo,
     render_inicio,
     render_projeto,
+    render_dashboard,
 )
 
 
@@ -24,6 +25,7 @@ paginas = {
     ],
     "Dados e analises": [
         st.Page(render_conteudo, title="Conteudo Web", icon="📰"),
+        st.Page(render_dashboard, title="Painel final", icon="📊"),
         st.Page(render_arquivos, title="Upload e download", icon="📁"),
     ],
     "Documentacao": [

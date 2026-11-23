@@ -11,6 +11,7 @@ from climasaude.api_client import (
     analisar_textos_api,
     obter_previsao_api,
     resumir_texto_api,
+    resumir_conteudo_api,
 )
 from climasaude.analysis import STOPWORDS
 from climasaude.config import CIDADES
@@ -277,3 +278,77 @@ def render_projeto() -> None:
 - [Repositorio GitHub](https://github.com/pedro-ribeiro00/climasaude-2030)
 """
     )
+
+
+def render_dashboard() -> None:
+    """Reúne dados climáticos e síntese dos textos coletados."""
+    _titulo("Painel final: clima e saúde")
+    nomes = {cidade.nome: cidade_id for cidade_id, cidade in CIDADES.items()}
+    cidade_nome = st.selectbox("Cidade", list(nomes), key="painel_cidade")
+
+    try:
+        previsao = _previsao_em_cache(nomes[cidade_nome])
+    except APIIndisponivel as exc:
+        st.error(str(exc))
+        return
+
+    dias = pd.DataFrame(previsao["previsao"])
+    if dias.empty:
+        st.warning("A fonte climática não retornou dados.")
+        return
+    dias["data"] = pd.to_datetime(dias["data"])
+
+    a, b, c = st.columns(3)
+    a.metric("Maior temperatura prevista", f"{dias['temperatura_max_c'].max():.1f} °C")
+    b.metric("Maior sensação térmica", f"{dias['sensacao_max_c'].max():.1f} °C")
+    c.metric("Maior índice UV", f"{dias['uv_max'].max():.1f}")
+    st.subheader("Previsão para os próximos sete dias")
+    st.line_chart(dias.set_index("data")[["temperatura_max_c", "sensacao_max_c"]])
+    st.caption("Fonte: Open-Meteo. São previsões, sujeitas a atualização.")
+
+    conteudo = _carregar_conteudo(str(CONTEUDO_CSV))
+    if conteudo.empty:
+        st.warning("Não há dados de scraping. Execute o script de coleta descrito no README.")
+        return
+
+    st.subheader("Conteúdo público sobre calor e saúde")
+    fontes = sorted(conteudo["fonte"].dropna().unique())
+    escolhidas = st.multiselect("Fontes para a síntese", fontes, default=fontes)
+    filtrado = conteudo[conteudo["fonte"].isin(escolhidas)].copy()
+    if filtrado.empty:
+        st.info("Selecione uma fonte para continuar.")
+        return
+
+    c1, c2 = st.columns(2)
+    c1.metric("Trechos coletados", len(filtrado))
+    c2.metric("Fontes selecionadas", filtrado["fonte"].nunique())
+    st.bar_chart(filtrado.groupby("fonte").size().rename("Trechos"))
+    st.dataframe(filtrado[["fonte", "texto", "url"]].head(10), hide_index=True, width="stretch")
+
+    st.subheader("Síntese automática com IA")
+    st.write("O modelo local resume os textos coletados e relaciona o conteúdo com a previsão exibida.")
+    if st.button("Gerar síntese", type="primary"):
+        linhas = []
+        for dia in dias.itertuples(index=False):
+            data = dia.data.strftime("%d/%m/%Y")
+            linhas.append(
+                f"{data}: temperatura máxima {dia.temperatura_max_c} °C, "
+                f"sensação térmica {dia.sensacao_max_c} °C, UV {dia.uv_max}"
+            )
+        contexto = f"Cidade: {cidade_nome}. " + " | ".join(linhas)
+        textos = [f"Fonte: {linha.fonte}. {linha.texto}" for linha in filtrado.itertuples(index=False)]
+        try:
+            with st.spinner("Analisando os trechos com o modelo local..."):
+                resposta = resumir_conteudo_api(textos, contexto)
+            st.write(resposta["resultado"])
+            st.caption(
+                f"{resposta['total_trechos']} trechos em {resposta['total_blocos']} blocos. "
+                "Síntese educativa; consulte as fontes originais e os alertas oficiais."
+            )
+        except APIIndisponivel as exc:
+            st.error(str(exc))
+
+    st.caption("Fontes originais: " + " | ".join(
+        f"{linha.fonte}: {linha.url}" for linha in
+        filtrado[["fonte", "url"]].drop_duplicates().itertuples(index=False)
+    ))
