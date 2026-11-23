@@ -1,68 +1,62 @@
-"""Síntese dos textos públicos coletados para o painel final."""
+"""Síntese extrativa: seleção pelo Qwen e preservação dos textos originais."""
 
-from climasaude.llm import resumir_texto
+from climasaude.llm import carregar_modelo, dividir_texto, selecionar_trecho
 
 
-def _agrupar_textos(textos: list[str], limite: int = 2800) -> list[str]:
-    """Agrupa os trechos sem descartar conteúdo quando passam do limite."""
-    blocos = []
-    atual = ""
-    for item in textos:
-        texto = " ".join(item.split())
-        while texto:
-            espaco = limite - len(atual) - (1 if atual else 0)
-            if espaco < 100:
-                blocos.append(atual)
-                atual = ""
-                continue
-            if len(texto) <= espaco:
-                atual = f"{atual}\n{texto}" if atual else texto
-                break
-            corte = texto.rfind(" ", 0, espaco + 1)
-            if corte < 100:
-                corte = espaco
-            parte, texto = texto[:corte].strip(), texto[corte:].strip()
-            atual = f"{atual}\n{parte}" if atual else parte
-            blocos.append(atual)
-            atual = ""
+def _agrupar_trechos(textos: list[str], limite: int) -> list[list[str]]:
+    tokenizer, _ = carregar_modelo()
+    grupos, atual = [], []
+    for texto in textos:
+        # Mesmo um parágrafo muito grande é dividido, sem truncamento.
+        for parte in dividir_texto(texto, limite=limite - 20):
+            candidato = atual + [parte]
+            enumerado = "\n".join(f"{i}: {t}" for i, t in enumerate(candidato, 1))
+            if atual and len(tokenizer.encode(enumerado, add_special_tokens=False)) > limite:
+                grupos.append(atual)
+                atual = []
+            atual.append(parte)
     if atual:
-        blocos.append(atual)
-    return blocos
+        grupos.append(atual)
+    return grupos
 
 
 def gerar_sintese(textos: list[str], contexto: str) -> tuple[str, int]:
-    """Resume todos os trechos coletados e contextualiza com a previsão climática."""
+    """Processa todos os textos; o LLM seleciona evidências, sem reescrevê-las.
+
+    A previsão é reproduzida do contexto recebido, não estimada pelo modelo.
+    Os trechos mantêm o idioma da fonte. Não há resposta simulada ou fallback.
+    """
     validos = [texto.strip() for texto in textos if texto.strip()]
-    if not validos:
-        raise ValueError("Não há textos para resumir")
-
-    blocos = _agrupar_textos(validos)
-    notas = [resumir_texto(bloco) for bloco in blocos]
-    if not all(notas):
-        raise ValueError("O modelo não conseguiu resumir todos os blocos")
-
-    # Consolida os resumos parciais, inclusive quando há muitos blocos.
-    for _ in range(4):
-        conjunto = "\n".join(notas)
-        if len(conjunto) <= 2800:
+    if not validos or not contexto.strip():
+        raise ValueError("Não há textos ou contexto para resumir")
+    tokenizer, _ = carregar_modelo()
+    limite = min(1100, 2048 - len(tokenizer.encode(contexto)) - 250)
+    if limite < 100:
+        raise ValueError("O contexto climático excede o espaço disponível")
+    grupos = _agrupar_trechos(validos, limite)
+    notas = [selecionar_trecho(grupo, contexto) for grupo in grupos]
+    # Seleciona até três evidências entre os candidatos de todos os blocos.
+    for _ in range(10):
+        if len(notas) <= 3:
             break
-        notas = [resumir_texto(bloco) for bloco in _agrupar_textos(notas)]
-        if not all(notas):
-            raise ValueError("Falha ao consolidar resumos")
+        novos_grupos = _agrupar_trechos(notas, limite)
+        if len(novos_grupos) == 1:
+            candidatos = novos_grupos[0].copy()
+            notas = []
+            for _ in range(min(3, len(candidatos))):
+                escolhido = selecionar_trecho(candidatos, contexto)
+                notas.append(escolhido)
+                candidatos.remove(escolhido)
+            break
+        if len(novos_grupos) == len(notas):
+            # Não descarta trechos por corte arbitrário: pede uma entrada menor.
+            raise ValueError("Trechos selecionados excedem o espaço para consolidação")
+        notas = [selecionar_trecho(grupo, contexto) for grupo in novos_grupos]
     else:
-        raise ValueError("Os resumos não couberam no contexto do modelo")
-
-    instrucao = (
-        "Elabore uma síntese curta, em português, usando somente os dados abaixo. "
-        "Em até três tópicos, apresente: (1) a previsão climática informada; "
-        "(2) o que as fontes públicas dizem sobre calor e saúde; "
-        "(3) uma conclusão educativa conectando os dois temas. "
-        "Não crie alertas oficiais, limites de risco, números ou recomendações "
-        "que não apareçam nos dados. Não apresente diagnóstico médico.\n\n"
-        f"PREVISÃO OPEN-METEO:\n{contexto}\n\n"
-        f"RESUMOS DAS FONTES:\n{conjunto}"
+        raise ValueError("Falha ao consolidar os trechos")
+    resultado = (
+        f"**Previsão Open-Meteo (contexto recebido)**\n\n{contexto}\n\n"
+        "**Síntese extrativa — trechos selecionados pelo Qwen**\n\n"
+        + "\n\n".join(f"- {nota}" for nota in notas)
     )
-    resultado = resumir_texto(instrucao)
-    if not resultado:
-        raise ValueError("O modelo retornou síntese vazia")
-    return resultado, len(blocos)
+    return resultado, len(grupos)

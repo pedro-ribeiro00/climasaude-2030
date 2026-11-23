@@ -49,3 +49,9 @@ Apos baixar o modelo uma vez, o resumo e gerado localmente por meio da rota `/pr
 O **Painel final** é uma nova página do Streamlit. Ela utiliza a previsão via FastAPI e os arquivos CSV produzidos pelo scraper. A nova rota `POST /sintese` executa o modelo local, mantendo os comandos de inicialização do TP4.
 
 Para conferir a aplicação: iniciar FastAPI e Streamlit, selecionar cidade e fontes, gerar a síntese, conferir o retorno e confrontá-lo com as URLs originais. A execução integral depende dos pesos do Qwen instalados no computador.
+
+## Validação final — 23/11/2026
+
+Foram instaladas as dependências em Python 3.12 e os pesos reais do Qwen. Os serviços iniciaram e a API foi exercitada por HTTP junto com a aplicação Streamlit por AppTest. Os scripts `scripts/validar_tp5.py` e `scripts/validar_interface_tp5.py` permitem repetir os testes. O relatório de aceite distingue testes reais aprovados da inspeção visual pendente.
+
+As correções foram registradas primeiro na branch `validacao-tp5-real`; a entrega final incorpora código, evidências, documentos e PDF à `main`, pelo PR #1. O acesso do navegador do Work às portas locais não funcionou e houve bloqueio pela política de segurança do navegador. Não houve publicação de um dashboard acessível externamente nem captura de imagens da aplicação funcionando.

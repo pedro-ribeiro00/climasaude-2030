@@ -1,0 +1,31 @@
+INFO:     Started server process [15]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:60766 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60774 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60776 - "GET /cidades HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60792 - "GET /previsao/inexistente HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60800 - "POST /analises/texto HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60808 - "POST /analises/texto HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:60820 - "POST /analises/texto HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:60828 - "POST /processar_texto HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:60838 - "POST /processar_texto HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:60852 - "POST /processar_texto HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:60854 - "POST /sintese HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:60856 - "POST /sintese HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:60858 - "POST /sintese HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:60872 - "POST /sintese HTTP/1.1" 422 Unprocessable Entity
+`torch_dtype` is deprecated! Use `dtype` instead!
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+INFO:     127.0.0.1:60874 - "POST /processar_texto HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48238 - "GET /previsao/sao-paulo HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48254 - "POST /sintese HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43606 - "GET /previsao/rio-de-janeiro HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43620 - "POST /sintese HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43220 - "GET /previsao/sao-paulo HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43236 - "POST /sintese HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [15]

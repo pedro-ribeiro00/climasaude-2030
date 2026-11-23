@@ -1,0 +1,14 @@
+{
+  "caracteres": 10274,
+  "blocos": 3,
+  "tokens_por_bloco": [
+    1400,
+    1400,
+    1106
+  ],
+  "reconstrucao_exata": true,
+  "grupos_tp5": 4,
+  "reconstrucao_grupos_tp5": true,
+  "unicode_testado": true,
+  "fim_preservado": true
+}

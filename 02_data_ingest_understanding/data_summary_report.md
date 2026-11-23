@@ -257,3 +257,9 @@ O corpus registrado em `data/raw/conteudo_calor_saude.csv` tem as colunas `fonte
 **Preparação para o modelo:** a interface filtra por fonte, lê os trechos, inclui a identificação da origem e envia os textos para a FastAPI. Os trechos são agrupados em blocos de aproximadamente 2.800 caracteres, resumidos individualmente e depois consolidados. Em seguida, o resumo recebe como contexto a previsão da cidade selecionada. A previsão numérica é distinta das informações extraídas das páginas públicas.
 
 **Qualidade e limites:** as páginas podem mudar, conter informações repetidas ou secundárias, e apresentar datas diferentes das previsões. O modelo de linguagem pode criar ou distorcer afirmações; por isso, o resultado deve ser comparado com as URLs originais. O IBGE continua como fonte planejada e não integrada.
+
+## 20. Coleta conferida na validação final — 23/11/2026
+
+O script de scraping foi executado novamente contra as páginas públicas e retornou 61 registros: 13 do Ministério da Saúde e 48 da OMS. CSV e TXT foram atualizados com URL e horário de coleta. O painel utiliza esse CSV, não o arquivo de exemplo de upload. As cinco cidades retornaram previsão real de sete dias durante os testes.
+
+A data da coleta não equivale à data de publicação das orientações. A página do Ministério contém menções a alertas que não devem ser tratados como vigentes para a cidade escolhida. A previsão da Open-Meteo, isoladamente, não permite classificar uma onda de calor. O modelo seleciona trechos em seu idioma original e a interface mostra os horários de coleta.

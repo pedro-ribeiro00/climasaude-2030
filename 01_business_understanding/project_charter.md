@@ -202,7 +202,7 @@ O projeto passa a oferecer resumo de texto com modelo de linguagem executado loc
 
 **Ciclo de Ciência de Dados:** obtenção (Open-Meteo e web scraping), preparação (Python/Pandas e eliminação de duplicados), análise (métricas, gráficos e frequência de palavras), aplicação de IA (prompt e resumo dos textos coletados), apresentação (dashboard) e verificação de resultados.
 
-**Prompt Engineering:** a instrução do modelo pede três partes: dados da previsão, informações das fontes públicas e conclusão educativa. Restringe a geração às informações enviadas para evitar números e alertas inventados. Os textos são processados em blocos para respeitar o limite do modelo.
+**Prompt Engineering:** o Qwen recebe o contexto climático e trechos numerados, selecionando evidências relevantes sobre calor e saúde. A geração é restrita aos índices válidos; a síntese extrativa preserva as palavras e o idioma das fontes. A previsão é reproduzida do contexto recebido. A mudança foi adotada após a geração livre inventar uma emergência climática. Os blocos são limitados pelo tokenizer real, sem truncamento silencioso.
 
 **Resultado esperado:** facilitar o acesso a informação ambiental e de saúde de caráter educativo. A solução não é alerta meteorológico oficial, não diagnostica doenças e não prevê impactos epidemiológicos.
 
