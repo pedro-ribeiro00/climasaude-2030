@@ -241,3 +241,19 @@ Nas proximas etapas, os textos coletados poderao ser enviados a um LLM para gera
 ## 18. Atualizacao do TP4
 
 A nuvem de palavras volta a ser exibida na pagina Conteudo Web, incluindo textos da coluna `texto` do CSV enviado na sessao. O usuario tambem pode fornecer um texto para resumo pelo modelo local, por meio da FastAPI. A resposta gerada pode conter erros e deve ser conferida com o texto original.
+
+
+## 19. Consolidação dos dados - TP5
+
+| Fonte | Coleta e formato | Tratamento | Utilização |
+|---|---|---|---|
+| Open-Meteo | API com resposta JSON | Organização de sete dias por cidade | Indicadores climáticos e contexto do resumo |
+| Ministério da Saúde | Requests e Beautiful Soup em página pública | Remoção de trechos repetidos e não informativos, armazenamento CSV/TXT | Textos sobre calor e saúde |
+| Organização Mundial da Saúde | Requests e Beautiful Soup em página pública | Mesmo tratamento, com URL preservada | Textos complementares |
+| Arquivo enviado pelo usuário | Upload de CSV | Leitura com Pandas durante a sessão | Exploração complementar das páginas anteriores |
+
+O corpus registrado em `data/raw/conteudo_calor_saude.csv` tem as colunas `fonte`, `url`, `tipo_elemento`, `texto` e `coletado_em_utc`. Ele representa a última execução do scraper, e não uma atualização automática a cada acesso ao painel.
+
+**Preparação para o modelo:** a interface filtra por fonte, lê os trechos, inclui a identificação da origem e envia os textos para a FastAPI. Os trechos são agrupados em blocos de aproximadamente 2.800 caracteres, resumidos individualmente e depois consolidados. Em seguida, o resumo recebe como contexto a previsão da cidade selecionada. A previsão numérica é distinta das informações extraídas das páginas públicas.
+
+**Qualidade e limites:** as páginas podem mudar, conter informações repetidas ou secundárias, e apresentar datas diferentes das previsões. O modelo de linguagem pode criar ou distorcer afirmações; por isso, o resultado deve ser comparado com as URLs originais. O IBGE continua como fonte planejada e não integrada.

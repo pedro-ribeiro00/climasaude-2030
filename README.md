@@ -18,7 +18,8 @@ A aplicacao tem finalidade educativa. Ela nao substitui alertas oficiais ou orie
 - FastAPI integrada ao Streamlit;
 - web scraping com Beautiful Soup;
 - resumo de texto com modelo de linguagem executado localmente;
-- nuvem de palavras para os textos coletados e enviados por CSV.
+- nuvem de palavras para os textos coletados e enviados por CSV;
+- painel final com indicadores climáticos e síntese automática dos textos coletados.
 
 ## Paginas da aplicacao
 
@@ -27,6 +28,7 @@ A aplicacao tem finalidade educativa. Ela nao substitui alertas oficiais ou orie
 3. **Conteudo Web:** exibe e analisa os textos coletados.
 4. **Upload e download:** permite explorar um arquivo CSV.
 5. **Sobre o projeto:** resume o problema, os ODS e os proximos passos.
+6. **Painel final:** reúne previsão, indicadores, textos públicos e síntese automática.
 
 ## FastAPI
 
@@ -39,6 +41,7 @@ A API possui as seguintes rotas:
 | GET | `/previsao/{cidade_id}` | Consulta a previsao de sete dias |
 | POST | `/analises/texto` | Calcula estatisticas dos textos enviados |
 | POST | `/processar_texto` | Gera resumo com o modelo local |
+| POST | `/sintese` | Sintetiza os textos coletados, com contexto climático |
 
 O Streamlit consome a rota GET de previsao e a rota POST de analise textual. A documentacao automatica fica disponivel em `http://127.0.0.1:8000/docs` quando a API esta em execucao.
 
@@ -119,6 +122,7 @@ climasaude-2030/
 │   ├── api_client.py
 │   ├── config.py
 │   ├── llm.py
+│   ├── tp5.py
 │   ├── ui.py
 │   └── weather.py
 ├── scripts/
@@ -145,3 +149,12 @@ https://github.com/pedro-ribeiro00/climasaude-2030
 ## Uso de IA e fontes
 
 O ChatGPT (OpenAI) foi utilizado como ferramenta de apoio para planejar, implementar e revisar o TP4. O responsavel pelo projeto deve conferir e compreender o codigo e os resultados. Fonte do modelo: https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct
+
+
+## TP5 - Painel final e síntese automática
+
+Na página **Painel final**, selecione uma cidade e as fontes de texto, depois clique em **Gerar síntese**. Os textos vêm diretamente do CSV gerado pelo scraping. O modelo Qwen local processa os trechos em blocos e produz uma síntese relacionada aos indicadores de sete dias da Open-Meteo. Não é necessário colar textos.
+
+O scraper não roda automaticamente na abertura do painel. Para atualizar o conteúdo, execute `python scripts/scrape_heat_content.py`. Os resumos são educativos, podem conter erros e não substituem alertas oficiais ou orientação médica.
+
+Os documentos finais TDSP estão nas pastas 01_business_understanding, 02_data_ingest_understanding, 03_modeling, 04_deployment e 05_acceptance. Os testes finais de inferência devem ser realizados com os pesos do modelo instalados.

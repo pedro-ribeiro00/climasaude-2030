@@ -192,3 +192,20 @@ Nas proximas etapas, os textos coletados poderao ser usados por um LLM para gera
 ## 16. Atualizacao do escopo - TP4
 
 O projeto passa a oferecer resumo de texto com modelo de linguagem executado localmente, integrado ao Streamlit pela FastAPI. A resposta e informativa, pode conter erros e deve ser conferida na fonte. A nuvem de palavras do TP2 foi restaurada.
+
+
+## 17. Consolidação do projeto - TP5
+
+**Problema:** dados climáticos e orientações sobre calor e saúde estão dispersos, dificultando a leitura conjunta.
+
+**Solução:** a aplicação oferece previsão de sete dias em cinco cidades, textos públicos do Ministério da Saúde e da OMS e uma síntese automática gerada pelo modelo Qwen2.5-0.5B-Instruct. O usuário escolhe cidade e fontes, e o painel combina visualizações numéricas com explicações textuais.
+
+**Ciclo de Ciência de Dados:** obtenção (Open-Meteo e web scraping), preparação (Python/Pandas e eliminação de duplicados), análise (métricas, gráficos e frequência de palavras), aplicação de IA (prompt e resumo dos textos coletados), apresentação (dashboard) e verificação de resultados.
+
+**Prompt Engineering:** a instrução do modelo pede três partes: dados da previsão, informações das fontes públicas e conclusão educativa. Restringe a geração às informações enviadas para evitar números e alertas inventados. Os textos são processados em blocos para respeitar o limite do modelo.
+
+**Resultado esperado:** facilitar o acesso a informação ambiental e de saúde de caráter educativo. A solução não é alerta meteorológico oficial, não diagnostica doenças e não prevê impactos epidemiológicos.
+
+**ESG e ODS:** a dimensão Ambiental é representada por dados climáticos e a Social por informação acessível sobre calor e saúde. ODS 13 é o principal, com relação aos ODS 3 e 11. Não há medição direta de desempenho em governança corporativa.
+
+**Critérios de aceite:** painel funcional, gráficos com dados reais, seleção de fontes, síntese gerada a partir dos textos coletados, indicação das fontes, tratamento de erros e documentação atualizada. O resultado do modelo deve ser conferido nas fontes.

@@ -42,3 +42,10 @@ A URL padrao da API e `http://127.0.0.1:8000`. A documentacao das rotas pode ser
 ## Execucao do TP4
 
 Apos baixar o modelo uma vez, o resumo e gerado localmente por meio da rota `/processar_texto`, sem conexao com servico externo. Para os comandos atualizados e detalhes de hardware, consulte o README e `03_modeling/llm_plan.md`.
+
+
+## Execução TP5
+
+O **Painel final** é uma nova página do Streamlit. Ela utiliza a previsão via FastAPI e os arquivos CSV produzidos pelo scraper. A nova rota `POST /sintese` executa o modelo local, mantendo os comandos de inicialização do TP4.
+
+Para conferir a aplicação: iniciar FastAPI e Streamlit, selecionar cidade e fontes, gerar a síntese, conferir o retorno e confrontá-lo com as URLs originais. A execução integral depende dos pesos do Qwen instalados no computador.
