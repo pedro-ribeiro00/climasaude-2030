@@ -178,3 +178,11 @@ python -m pip install -r requirements.txt
 ```
 
 O padrão é usar duas threads de CPU para a inferência. Ajuste com `CLIMASAUDE_CPU_THREADS` se necessário. A rota legada `/processar_texto` mantém o resumo abstrativo e pode ter erros factuais; o painel TP5 utiliza `/sintese`, com seleção extrativa verificável.
+
+## Entrega do TP5
+
+- [Relatório acadêmico em PDF](pedro_ribeiro_PB_TP5.PDF)
+- [Checklist das oito rubricas e pendências visuais](05_acceptance/validacao_tp5.md)
+- [Evidências reais de execução](05_acceptance/evidencias/)
+
+A validação funcional está registrada nos JSONs. Inspeção visual, capturas do dashboard e upload/download pelo navegador permanecem pendentes; não foram substituídos por simulações.

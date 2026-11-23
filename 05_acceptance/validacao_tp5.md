@@ -52,17 +52,48 @@ Os tempos completos por chamada estão nos JSONs. Nos cenários medidos, uma fon
 
 Todos os trechos entram nos grupos processados. Uma síntese seleciona uma parte do conteúdo por relevância; não promete reproduzir todos os fatos. A validação compara os trechos selecionados com o CSV e o contexto com a previsão enviada. As afirmações copiadas continuam sujeitas à data e às limitações da fonte original. As máximas previstas, por si só, não demonstram onda de calor, emergência ou risco individual.
 
-## Relação com as rubricas recebidas
+## Checklist de aceite: oito rubricas completas
 
-| Rubrica | Evidência e limite |
-|---|---|
-| Integração da sumarização ao dashboard | Botão → FastAPI → Qwen real → resultado e fontes, exercitado por AppTest; aparência no navegador pendente |
-| Uso de API e scraping para ESG/ODS | Previsões reais e textos públicos processados; Ambiental/ODS 13 e Social/ODS 3, com aplicação educativa às cidades/ODS 11; não mede impacto ESG nem desempenho corporativo |
-| Ciclo completo de Ciência de Dados | Coleta atualizada, limpeza/deduplicação, métricas e gráficos, seleção com LLM, apresentação e avaliação registradas |
-| Quarta rubrica | A mensagem recebida terminou em “Justificativa clara de como”; critério completo não disponível para conferir |
+Checklist conferido com a imagem das rubricas enviada pelo aluno. Os estados abaixo descrevem evidências disponíveis, não uma atribuição de nota.
+
+### 1. O aluno integrou de forma adequada uma funcionalidade indicada (memória conversacional, sumarização de textos ou agente inteligente) ao dashboard produzido?
+
+**Situação: Evidenciada funcionalmente.** Opção 2: seleção de cidade e fontes, botão Gerar síntese, POST /sintese, Qwen real e resultado rastreável. Testes de integração em api_real.json e streamlit_interacoes.json. Aparência no navegador pendente.
+
+### 2. O aluno utilizou de maneira eficaz os dados coletados por APIs ou web scraping para gerar insights relevantes no contexto de ESG e ODS?
+
+**Situação: Evidenciada no escopo educativo.** Previsões reais de sete dias e 61 trechos coletados (13 MS e 48 OMS). O contexto climático orienta a seleção de evidências sobre calor e saúde. Relação com Ambiental/ODS 13 e Social/ODS 3 e 11; sem medição de impacto ESG ou desempenho corporativo.
+
+### 3. O aluno aplicou corretamente todas as etapas do ciclo completo de Ciência de Dados (coleta, processamento, análise e apresentação) em sua solução?
+
+**Situação: Evidenciada funcionalmente.** Open-Meteo e scraping; Python/Pandas e deduplicação; métricas, gráficos e análise textual; seleção com LLM; apresentação no Streamlit e avaliação registrada. A inspeção visual da apresentação permanece pendente.
+
+### 4. O aluno justificou de maneira clara e objetiva como a solução resolve o problema de negócio proposto, demonstrando seu impacto no contexto de ESG e ODS?
+
+**Situação: Justificativa documentada.** Project Charter e PDF explicam a reunião de previsão e orientações antes dispersas, reduzindo consulta e leitura manual. Benefício educativo esperado para clima, saúde e cidades; não se afirma impacto social ou clínico medido.
+
+### 5. O aluno implementou o uso de LLMs, seja localmente ou por APIs online, de forma eficiente e alinhada ao objetivo do projeto?
+
+**Situação: Evidenciada por inferência real.** Qwen2.5-0.5B-Instruct local em CPU, sem resposta simulada. Tempos de 4,088 s (SP/MS), 10,379 s (RJ/OMS) e 20,490 s (SP/ambas). Divisão por tokens e geração restrita aos índices de trechos evitam corte silencioso e redação inventada na síntese TP5.
+
+### 6. O aluno apresentou o dashboard com visualizações claras e organizadas, facilitando a interpretação dos insights gerados pelos dados e IA?
+
+**Situação: Parcial: validação visual pendente.** Métricas, gráficos e tabelas são emitidos pelo Streamlit, com execução por AppTest. Isso não comprova legibilidade, organização dos pixels, layout responsivo ou ausência de sobreposição. Não há captura real do dashboard nesta execução.
+
+### 7. O aluno completou e atualizou corretamente os artefatos do TDSP (Project Charter e Data Summary Report), refletindo todo o processo de Ciência de Dados?
+
+**Situação: Documentada e conferida.** Project Charter e Data Summary Report atualizados, acompanhados de modelagem, implantação, aceite e README. Refletem dados reais, síntese extrativa, resultados dos testes e limitações.
+
+### 8. O aluno demonstrou simplicidade e fluidez no uso da aplicação, garantindo uma experiência de usuário intuitiva e prática?
+
+**Situação: Parcial: fluidez visual pendente.** AppTest exercitou seleção das cinco cidades, filtros, ausência de fontes, geração e persistência da síntese. Menu no navegador, seletor de upload, downloads e avaliação visual da experiência ainda não foram verificados.
 
 ## Limite do navegador e pendências de aceite
 
 A conexão à extensão do navegador expirou. O navegador do Work recusou acesso a `http://127.0.0.1:8501`; ao investigar a falha, sua política de segurança impediu prosseguir. O bloqueio não foi contornado. Os serviços iniciaram, mas não foi possível comprovar layout, navegação e downloads em uma página visível nem capturar imagens reais do dashboard.
 
 Para encerrar o aceite: abrir FastAPI e Streamlit em um ambiente acessível pelo navegador, percorrer o menu e os controles, testar upload/download e capturar o painel com uma síntese. O AppTest é evidência de execução da interface Python, não substitui essa inspeção visual.
+
+## Publicação da entrega
+
+As correções funcionais e suas evidências foram registradas em `484fc535580e9ec50339829931ce0ab27c7c0146`, inicialmente na branch `validacao-tp5-real`. A entrega final incorpora esse conteúdo à `main`, com este checklist completo e o PDF `pedro_ribeiro_PB_TP5.PDF` na raiz. Não foram repetidos testes funcionais: os resultados acima vêm dos JSONs já produzidos. A inspeção visual continua pendente, sem novas tentativas de contornar a política do navegador.

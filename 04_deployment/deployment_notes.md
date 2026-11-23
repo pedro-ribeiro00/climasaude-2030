@@ -54,4 +54,4 @@ Para conferir a aplicação: iniciar FastAPI e Streamlit, selecionar cidade e fo
 
 Foram instaladas as dependências em Python 3.12 e os pesos reais do Qwen. Os serviços iniciaram e a API foi exercitada por HTTP junto com a aplicação Streamlit por AppTest. Os scripts `scripts/validar_tp5.py` e `scripts/validar_interface_tp5.py` permitem repetir os testes. O relatório de aceite distingue testes reais aprovados da inspeção visual pendente.
 
-As correções foram preparadas em uma branch de validação para revisão. O acesso do navegador do Work às portas locais não funcionou e houve bloqueio pela política de segurança do navegador. Não houve publicação de um dashboard acessível externamente nem captura de imagens da aplicação funcionando.
+As correções foram registradas primeiro na branch `validacao-tp5-real`; a entrega final incorpora código, evidências, documentos e PDF à `main`, pelo PR #1. O acesso do navegador do Work às portas locais não funcionou e houve bloqueio pela política de segurança do navegador. Não houve publicação de um dashboard acessível externamente nem captura de imagens da aplicação funcionando.
