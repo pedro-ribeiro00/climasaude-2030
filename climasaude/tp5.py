@@ -21,11 +21,7 @@ def _agrupar_trechos(textos: list[str], limite: int) -> list[list[str]]:
 
 
 def gerar_sintese(textos: list[str], contexto: str) -> tuple[str, int]:
-    """Processa todos os textos; o LLM seleciona evidências, sem reescrevê-las.
-
-    A previsão é reproduzida do contexto recebido, não estimada pelo modelo.
-    Os trechos mantêm o idioma da fonte. Não há resposta simulada ou fallback.
-    """
+    """Seleciona trechos das fontes e apresenta o contexto climático recebido."""
     validos = [texto.strip() for texto in textos if texto.strip()]
     if not validos or not contexto.strip():
         raise ValueError("Não há textos ou contexto para resumir")
