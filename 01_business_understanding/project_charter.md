@@ -1,211 +1,46 @@
 # Project Charter - ClimaSaúde 2030
 
-## 1. Nome do projeto
+## Problema e objetivo
 
-**ClimaSaúde 2030 - Monitoramento de Condições Associadas ao Calor Extremo**
+Previsões do tempo e orientações sobre calor e saúde estão em fontes diferentes. O ClimaSaúde 2030 foi criado para reunir essas informações e facilitar sua consulta em uma interface simples.
 
-## 2. Problema de negócio
+O público principal é formado por pessoas interessadas nas condições climáticas de sua cidade. O projeto também pode ser usado como exemplo educativo por estudantes e pessoas que trabalham com temas ambientais.
 
-Eventos de calor extremo podem representar riscos à saúde e ao bem-estar da população, especialmente em áreas urbanas. Embora existam dados meteorológicos públicos, informações como temperatura, sensação térmica e índice UV nem sempre são apresentadas de forma integrada e simples para cidadãos e gestores.
+## Solução
 
-O problema de negócio tratado pelo projeto é, portanto, a dificuldade de transformar dados climáticos disponíveis em informações de fácil interpretação, capazes de apoiar a identificação de períodos com maior exposição ao calor e melhorar a comunicação dessas condições para o público.
+A aplicação usa Streamlit e FastAPI para apresentar:
 
-## 3. Proposta da solução
+- previsão de sete dias em cinco cidades brasileiras, consultada na Open-Meteo;
+- temperatura máxima, sensação térmica, índice UV, precipitação e gráficos;
+- textos do Ministério da Saúde e da OMS, coletados com Beautiful Soup;
+- estatísticas textuais, nuvem de palavras e upload/download de CSV;
+- resumo livre com o Qwen local (TP4);
+- painel final com seleção automática de trechos coletados (TP5).
 
-Desenvolver uma aplicação data-driven em Python e Streamlit que consulte fontes públicas de dados climáticos, processe as informações e apresente indicadores relevantes em uma interface simples e acessível.
+No TP5 foi escolhida a **opção 2: sumarização automática com LLM**. O usuário seleciona a cidade e as fontes. O Qwen recebe o contexto climático, escolhe os trechos mais relevantes e a aplicação apresenta os textos originais. Essa abordagem foi adotada após erros observados na geração livre.
 
-Na primeira versão, a aplicação apresenta dados de temperatura máxima, sensação térmica máxima, índice UV e precipitação. Nas etapas seguintes, o projeto poderá incorporar novas fontes de dados, conteúdo textual coletado da Web e recursos de Inteligência Artificial para gerar análises e insights contextualizados.
+## Escopo e limites
 
-## 4. Objetivo geral
+O projeto oferece informações educativas. Ele não emite alertas oficiais, não classifica ondas de calor, não prevê doenças nem substitui orientação médica.
 
-Desenvolver uma aplicação capaz de coletar, processar e apresentar dados climáticos de maneira acessível, facilitando a compreensão de condições associadas à exposição ao calor extremo.
+O IBGE foi considerado no início, mas não foi integrado à versão final. Também não são medidos indicadores de governança ou desempenho ESG de empresas.
 
-## 5. Objetivos específicos
+## Metas e critérios de sucesso
 
-- Consumir dados climáticos de fontes públicas por meio de APIs.
-- Processar e organizar os dados utilizando Python e Pandas.
-- Apresentar os principais indicadores climáticos em uma interface Streamlit.
-- Facilitar a interpretação de informações relacionadas à exposição ao calor.
-- Manter o projeto estruturado para receber novas fontes de dados e funcionalidades nas próximas etapas.
-- Preparar a arquitetura para futura integração com técnicas de Inteligência Artificial e modelos de linguagem.
-
-## 6. Público-alvo
-
-O público-alvo principal é formado por **cidadãos que desejam compreender, de forma simples, as condições climáticas de sua localidade e situações de maior exposição ao calor**.
-
-Como públicos secundários, a solução poderá atender gestores públicos, organizações sociais, profissionais de sustentabilidade e pesquisadores interessados em clima, cidades e saúde.
-
-## 7. Metas do projeto
-
-- Integrar pelo menos uma API pública de dados climáticos no protótipo inicial.
-- Exibir temperatura máxima, sensação térmica máxima, índice UV e precipitação.
-- Disponibilizar os dados em uma aplicação Streamlit executável localmente.
-- Garantir que o ambiente do projeto possa ser reproduzido a partir do arquivo `requirements.txt`.
-- Estruturar o projeto segundo as fases do TDSP para permitir sua evolução durante os próximos TPs.
-
-## 8. Indicadores de sucesso
-
-| Indicador | Critério de sucesso |
+| Meta | Verificação |
 |---|---|
-| Integração com fonte externa | A aplicação realiza consulta bem-sucedida à API climática |
-| Indicadores disponíveis | Temperatura, sensação térmica, índice UV e precipitação são exibidos |
-| Atualização dos dados | Os dados são obtidos automaticamente a partir da API |
-| Funcionamento da aplicação | O dashboard Streamlit executa localmente sem erros |
-| Reprodutibilidade | O ambiente pode ser recriado usando `requirements.txt` |
-| Usabilidade inicial | Os indicadores são apresentados de maneira organizada e compreensível |
+| Reunir dados de fontes distintas | Previsão e textos públicos acessíveis no mesmo painel |
+| Organizar as informações | Indicadores, tabelas e gráficos por cidade |
+| Aplicar LLM a dados coletados | FastAPI, Qwen real e síntese no painel |
+| Identificar a origem dos textos | URL e horário de coleta |
+| Permitir reprodução | Código, dependências e instruções no GitHub |
 
-## 9. Alinhamento com ESG
+Em 23/11/2026 houve testes funcionais com dados externos e Qwen local. A interface também foi executada pelo AppTest; a avaliação visual no navegador ficou pendente.
 
-O projeto se relaciona principalmente aos pilares **Ambiental** e **Social** do ESG.
+## ESG, ODS e metodologia
 
-### Ambiental
+O projeto se relaciona ao pilar **Ambiental**, por usar dados climáticos, e ao **Social**, por apresentar informações públicas sobre saúde. O **ODS 13** é o principal, com conexões aos **ODS 3 e 11**. Espera-se facilitar o acesso à informação, mas não foi medido impacto social ou clínico.
 
-A solução utiliza dados ambientais e meteorológicos para ampliar a compreensão de condições associadas a eventos de calor extremo e seus impactos nas cidades.
+A organização segue o TDSP: compreensão do problema, obtenção e preparação dos dados, modelagem, implantação e aceite. O CRISP-DM foi usado como referência complementar.
 
-### Social
-
-A apresentação acessível dessas informações aproxima dados climáticos de questões relacionadas à saúde e ao bem-estar da população, contribuindo para conscientização e melhor compreensão de situações de exposição ao calor.
-
-## 10. Objetivos de Desenvolvimento Sustentável (ODS)
-
-### ODS principal: ODS 13 - Ação Contra a Mudança Global do Clima
-
-O ODS 13 foi escolhido como principal porque o projeto utiliza dados climáticos para tornar mais compreensíveis condições associadas ao calor extremo. A proposta está ligada à conscientização e à adaptação aos impactos de eventos climáticos, transformando dados técnicos em informações mais acessíveis ao usuário.
-
-### ODS relacionados
-
-**ODS 3 - Saúde e Bem-Estar:** o calor extremo pode afetar a saúde e o bem-estar da população, tornando relevante a comunicação de condições de maior exposição.
-
-**ODS 11 - Cidades e Comunidades Sustentáveis:** a análise e comunicação de condições climáticas em áreas urbanas contribui para a discussão sobre cidades mais preparadas para eventos climáticos extremos.
-
-## 11. Stakeholders
-
-- **Usuários da aplicação:** cidadãos interessados em consultar e compreender informações climáticas.
-- **Gestores públicos e profissionais de sustentabilidade:** potenciais usuários dos dados para acompanhamento e comunicação de condições climáticas.
-- **Organizações sociais e pesquisadores:** interessados em análises relacionadas a clima, saúde e cidades.
-- **Responsável pelo desenvolvimento:** responsável pela coleta e processamento dos dados, desenvolvimento da aplicação, documentação e evolução da solução.
-
-## 12. Escopo do projeto
-
-### Escopo inicial - TP1
-
-- Estruturação do projeto segundo o TDSP.
-- Elaboração do Project Charter e do Data Summary Report.
-- Configuração do ambiente de desenvolvimento Python.
-- Integração com uma API pública de dados meteorológicos.
-- Desenvolvimento de uma aplicação demonstrativa em Streamlit.
-- Exibição de uma amostra dos dados utilizados.
-- Disponibilização de links úteis relacionados ao projeto.
-
-### Evolução prevista
-
-- Inclusão de novas fontes de dados.
-- Coleta de conteúdo textual por web scraping.
-- Novas visualizações e recursos interativos.
-- Desenvolvimento de API própria com FastAPI.
-- Integração de modelos de linguagem e recursos de Inteligência Artificial.
-- Geração automatizada de análises e insights relacionados ao contexto climático.
-
-## 13. Metodologia
-
-O projeto utilizará o **TDSP (Team Data Science Process)** como metodologia principal de organização e desenvolvimento.
-
-As fases adotadas são:
-
-1. Business Understanding
-2. Data Ingest & Understanding
-3. Modeling
-4. Deployment
-5. Acceptance
-
-O **CRISP-DM** será utilizado como referência complementar para o ciclo de Ciência de Dados, sem duplicar a estrutura do projeto.
-
-| CRISP-DM | TDSP |
-|---|---|
-| Business Understanding | Business Understanding |
-| Data Understanding | Data Ingest & Understanding |
-| Data Preparation | Data Ingest & Understanding |
-| Modeling | Modeling |
-| Evaluation | Modeling / Acceptance |
-| Deployment | Deployment |
-
-## 14. Atualizacao do escopo - TP2
-
-No TP2, a solucao evolui de um prototipo de visualizacao para uma aplicacao interativa. O escopo passa a incluir:
-
-- selecao de diferentes cidades pelo usuario;
-- coleta de conteudo publico sobre calor e saude com Beautiful Soup;
-- armazenamento dos dados coletados em CSV e TXT;
-- exibicao do conteudo coletado em tabelas e estatisticas;
-- nuvem de palavras;
-- cache para reduzir processamento e chamadas repetidas;
-- estado de sessao para preservar dados de interacao;
-- upload e download de arquivos CSV;
-- preparacao do repositorio Git/GitHub para continuidade e deploy.
-
-### Indicadores adicionais do TP2
-
-| Indicador | Criterio de sucesso |
-|---|---|
-| Interatividade | Usuario consegue selecionar diferentes cidades |
-| Web scraping | Script Beautiful Soup gera arquivos CSV e TXT |
-| Exploracao textual | Tabela, frequencias e nuvem de palavras sao exibidas |
-| Cache | Consultas climaticas utilizam `st.cache_data` |
-| Sessao | Historico de cidades e upload usam `st.session_state` |
-| Upload/download | Usuario consegue enviar e baixar CSVs |
-| Documentacao | Project Charter e Data Summary Report refletem o TP2 |
-
-## 15. Revisao do Project Charter - TP3
-
-### Reavaliacao do problema de negocio
-
-O problema original permanece relevante: dados climaticos e orientacoes sobre calor estao em fontes separadas. No TP3, a solucao passa a integrar essas informacoes por meio de uma FastAPI e organiza as funcionalidades em paginas diferentes no Streamlit.
-
-### Escopo implementado no TP3
-
-- aplicacao Streamlit com cinco paginas e menu de navegacao lateral;
-- FastAPI consumida pelo Streamlit;
-- rotas GET para status, cidades e previsao;
-- rota POST para analise de textos;
-- scraping com Beautiful Soup e armazenamento em CSV/TXT;
-- upload e download de CSV durante a sessao;
-- preparacao conceitual para uso futuro de LLM.
-
-### Metas e indicadores atualizados
-
-| Meta do TP3 | Criterio de sucesso |
-|---|---|
-| Separar interface e servicos | Streamlit consome endpoints da FastAPI |
-| Oferecer navegacao clara | Cinco paginas acessiveis pelo menu lateral |
-| Disponibilizar API propria | Rotas GET e POST documentadas em `/docs` |
-| Coletar conteudo Web | Beautiful Soup gera arquivos CSV e TXT |
-| Preparar futura integracao de LLM | Possibilidade de resumos e perguntas documentada |
-
-### Decisao sobre Selenium
-
-As paginas utilizadas disponibilizam o conteudo necessario diretamente no HTML, portanto nao foi necessario utilizar Selenium. Beautiful Soup foi suficiente para esta etapa.
-
-### Preparacao para LLM
-
-Nas proximas etapas, os textos coletados poderao ser usados por um LLM para gerar resumos e responder perguntas simples sobre calor e saude. A FastAPI podera fazer a integracao entre o modelo e o Streamlit. As respostas deverao indicar suas fontes e manter finalidade informativa. O plano resumido esta em `03_modeling/llm_plan.md`.
-
-## 16. Atualizacao do escopo - TP4
-
-O projeto passa a oferecer resumo de texto com modelo de linguagem executado localmente, integrado ao Streamlit pela FastAPI. A resposta e informativa, pode conter erros e deve ser conferida na fonte. A nuvem de palavras do TP2 foi restaurada.
-
-
-## 17. Consolidação do projeto - TP5
-
-**Problema:** dados climáticos e orientações sobre calor e saúde estão dispersos, dificultando a leitura conjunta.
-
-**Solução:** a aplicação oferece previsão de sete dias em cinco cidades, textos públicos do Ministério da Saúde e da OMS e uma síntese automática gerada pelo modelo Qwen2.5-0.5B-Instruct. O usuário escolhe cidade e fontes, e o painel combina visualizações numéricas com explicações textuais.
-
-**Ciclo de Ciência de Dados:** obtenção (Open-Meteo e web scraping), preparação (Python/Pandas e eliminação de duplicados), análise (métricas, gráficos e frequência de palavras), aplicação de IA (prompt e resumo dos textos coletados), apresentação (dashboard) e verificação de resultados.
-
-**Prompt Engineering:** o Qwen recebe o contexto climático e trechos numerados, selecionando evidências relevantes sobre calor e saúde. A geração é restrita aos índices válidos; a síntese extrativa preserva as palavras e o idioma das fontes. A previsão é reproduzida do contexto recebido. A mudança foi adotada após a geração livre inventar uma emergência climática. Os blocos são limitados pelo tokenizer real, sem truncamento silencioso.
-
-**Resultado esperado:** facilitar o acesso a informação ambiental e de saúde de caráter educativo. A solução não é alerta meteorológico oficial, não diagnostica doenças e não prevê impactos epidemiológicos.
-
-**ESG e ODS:** a dimensão Ambiental é representada por dados climáticos e a Social por informação acessível sobre calor e saúde. ODS 13 é o principal, com relação aos ODS 3 e 11. Não há medição direta de desempenho em governança corporativa.
-
-**Critérios de aceite:** painel funcional, gráficos com dados reais, seleção de fontes, síntese gerada a partir dos textos coletados, indicação das fontes, tratamento de erros e documentação atualizada. O resultado do modelo deve ser conferido nas fontes.
+O desenvolvimento ocorreu em etapas: TP1 (protótipo climático), TP2 (interatividade e scraping), TP3 (FastAPI e páginas), TP4 (Qwen local) e TP5 (síntese automática no painel). As versões anteriores permanecem no histórico do GitHub.

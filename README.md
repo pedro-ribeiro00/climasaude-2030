@@ -1,188 +1,71 @@
-# ClimaSaude 2030
+# ClimaSaúde 2030
 
-Projeto desenvolvido para a disciplina **Projeto de Bloco: Inteligencia Artificial Aplicada**.
+Projeto da disciplina **Projeto de Bloco - Inteligência Artificial Aplicada**.
 
-## Problema de negocio
+## Sobre o projeto
 
-Dados meteorologicos e orientacoes sobre calor extremo existem em fontes diferentes e nem sempre sao apresentados de forma integrada e simples. O ClimaSaude 2030 reune previsoes climaticas e conteudo publico sobre calor e saude em uma interface acessivel.
+O ClimaSaúde 2030 reúne previsões do tempo e informações públicas sobre calor e saúde. O objetivo é facilitar a consulta desses conteúdos, que normalmente estão em fontes diferentes. A aplicação é educativa: não substitui alertas oficiais nem orientação médica.
 
-A aplicacao tem finalidade educativa. Ela nao substitui alertas oficiais ou orientacao medica.
+## Funcionalidades
 
-## Funcionalidades do projeto
+- Previsão de sete dias para São Paulo, Rio de Janeiro, Belo Horizonte, Brasília e Porto Alegre.
+- Indicadores e gráficos de temperatura, sensação térmica, índice UV e precipitação.
+- Textos do Ministério da Saúde e da Organização Mundial da Saúde (OMS), coletados por scraping.
+- Frequência de palavras, nuvem de palavras e upload/download de CSV.
+- Resumo livre de um texto informado pelo usuário (TP4).
+- **Painel final (TP5)** com seleção automática de trechos das fontes, considerando a previsão da cidade.
 
-- aplicacao Streamlit com menu lateral e seis paginas;
-- consulta de previsao climatica para cinco cidades;
-- visualizacao e download dos dados climaticos;
-- exibicao e analise de conteudo coletado da Web;
-- upload, visualizacao e download de CSV;
-- FastAPI integrada ao Streamlit;
-- web scraping com Beautiful Soup;
-- resumo de texto com modelo de linguagem executado localmente;
-- nuvem de palavras para os textos coletados e enviados por CSV;
-- painel final com indicadores climáticos e síntese automática dos textos coletados.
-
-## Paginas da aplicacao
-
-1. **Inicio:** apresenta o objetivo e o funcionamento do projeto.
-2. **Previsao climatica:** consulta a previsao de sete dias.
-3. **Conteudo Web:** exibe e analisa os textos coletados.
-4. **Upload e download:** permite explorar um arquivo CSV.
-5. **Sobre o projeto:** resume o problema, os ODS e os proximos passos.
-6. **Painel final:** reúne previsão, indicadores, textos públicos e síntese automática.
-
-## FastAPI
-
-A API possui as seguintes rotas:
-
-| Metodo | Rota | Funcao |
-|---|---|---|
-| GET | `/health` | Verifica se a API esta funcionando |
-| GET | `/cidades` | Lista as cidades disponiveis |
-| GET | `/previsao/{cidade_id}` | Consulta a previsao de sete dias |
-| POST | `/analises/texto` | Calcula estatisticas dos textos enviados |
-| POST | `/processar_texto` | Gera resumo com o modelo local |
-| POST | `/sintese` | Sintetiza os textos coletados, com contexto climático |
-
-O Streamlit consome a rota GET de previsao e a rota POST de analise textual. A documentacao automatica fica disponivel em `http://127.0.0.1:8000/docs` quando a API esta em execucao.
-
-## Fontes de dados
-
-1. **Open-Meteo:** previsao de temperatura maxima, sensacao termica, indice UV e precipitacao.
-2. **Ministerio da Saude:** orientacoes publicas sobre ondas de calor.
-3. **World Health Organization:** informacoes complementares sobre calor e saude.
-4. **CSV do usuario:** dados adicionais enviados durante a sessao.
-
-## Web scraping e Selenium
-
-O script `scripts/scrape_heat_content.py` usa Requests e Beautiful Soup para coletar titulos, paragrafos e itens de lista. O resultado e salvo em CSV e TXT dentro de `data/raw/`.
-
-As paginas utilizadas disponibilizam o conteudo necessario diretamente no HTML, portanto nao foi necessario utilizar Selenium. Beautiful Soup foi suficiente para esta etapa.
-
-## Modelo local - TP4
-
-O modelo `Qwen/Qwen2.5-0.5B-Instruct` gera resumos em portugues a partir de texto fornecido pelo usuario. O modelo e pequeno e aceita instrucoes em portugues; a escolha, suas limitacoes e os custos computacionais estao descritos em `03_modeling/llm_plan.md`. A inferencia usa CPU e arquivos locais, sem servico de nuvem. Confira as respostas na fonte: elas podem conter erros e nao substituem orientacao medica.
+O painel final utiliza uma **síntese extrativa**: apresenta as palavras e o idioma dos textos originais. A previsão vem da Open-Meteo e não é criada pelo modelo.
 
 ## Como executar
 
-Requer Python 3.10 ou superior, espaco livre para dependencias e modelo, e conexao para instalacao e download inicial. A memoria e o tempo de processamento dependem do computador. GPU nao e obrigatoria.
+Requer Python 3.10 ou superior. Na pasta do projeto, crie um ambiente virtual e instale as dependências:
 
-### 1. Preparar o ambiente
+    python -m venv .venv
+    source .venv/bin/activate
+    python -m pip install -r requirements.txt
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-```
+No Windows, ative o ambiente com .venv\Scripts\activate.
 
-### 2. Baixar o modelo uma vez
+Baixe o Qwen uma vez:
 
-```bash
-python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='Qwen/Qwen2.5-0.5B-Instruct', allow_patterns=['*.json', '*.safetensors', '*.txt', '*.model', '*.tiktoken'])"
-```
+    python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='Qwen/Qwen2.5-0.5B-Instruct', allow_patterns=['*.json', '*.safetensors', '*.txt', '*.model', '*.tiktoken'])"
 
-Depois do download, a geracao do resumo funciona sem internet. O modelo nao e incluido no repositorio.
+Inicie a API e o Streamlit em dois terminais diferentes:
 
-### 3. Atualizar os dados de scraping (opcional)
+    uvicorn api.main:app --reload
 
-```bash
-python scripts/scrape_heat_content.py
-```
+    streamlit run app.py
 
-### 4. Iniciar a FastAPI
+A documentação das rotas está em http://127.0.0.1:8000/docs. A inferência do modelo funciona com os arquivos locais depois do download; a previsão e o scraping precisam de internet.
 
-No primeiro terminal:
+Para atualizar os textos coletados:
 
-```bash
-source .venv/bin/activate
-uvicorn api.main:app --reload
-```
+    python scripts/scrape_heat_content.py
 
-### 5. Iniciar o Streamlit
+O scraper não é executado quando o painel abre. O arquivo data/sample_upload.csv é apenas um exemplo para a página de upload.
 
-No segundo terminal:
+## Código e fontes
 
-```bash
-source .venv/bin/activate
-streamlit run app.py
-```
+| Arquivo | Função |
+|---|---|
+| app.py e climasaude/ui.py | Interface Streamlit |
+| api/main.py | API do projeto |
+| climasaude/weather.py | Dados da Open-Meteo |
+| scripts/scrape_heat_content.py | Coleta das páginas públicas |
+| climasaude/llm.py e climasaude/tp5.py | Modelo e síntese |
+| data/raw/ | Textos coletados |
 
-Para testar o upload, pode ser usado o arquivo `data/sample_upload.csv`. Na pagina Conteudo Web, cole um texto e clique em Gerar resumo. A primeira geracao pode demorar enquanto o modelo e carregado. O processamento de resumo e local; previsao e scraping precisam de internet.
+A FastAPI oferece GET /health, GET /cidades, GET /previsao/{cidade_id}, POST /analises/texto, POST /processar_texto e POST /sintese.
 
-## Estrutura principal
+Fontes: https://open-meteo.com/ ; https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/o/ondas-de-calor ; https://www.who.int/news-room/fact-sheets/detail/climate-change-heat-and-health
 
-```text
-climasaude-2030/
-├── app.py
-├── requirements.txt
-├── README.md
-├── api/
-│   └── main.py
-├── climasaude/
-│   ├── analysis.py
-│   ├── api_client.py
-│   ├── config.py
-│   ├── llm.py
-│   ├── tp5.py
-│   ├── ui.py
-│   └── weather.py
-├── scripts/
-│   └── scrape_heat_content.py
-├── data/
-│   ├── raw/
-│   └── sample_upload.csv
-├── 01_business_understanding/
-├── 02_data_ingest_understanding/
-├── 03_modeling/
-└── 04_deployment/
-```
+Modelo: https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct
 
-## ODS e metodologia
+## Documentação e testes
 
-O projeto se relaciona principalmente ao **ODS 13 - Acao Contra a Mudanca Global do Clima**, com conexoes ao **ODS 3 - Saude e Bem-Estar** e ao **ODS 11 - Cidades e Comunidades Sustentaveis**.
+Os documentos TDSP estão nas pastas 01_business_understanding a 05_acceptance. Os resultados de testes estão em 05_acceptance/validacao_tp5.md e 05_acceptance/evidencias/. Para repetir os testes funcionais, use scripts/validar_tp5.py e scripts/validar_interface_tp5.py após preparar o ambiente.
 
-O repositorio segue a organizacao do TDSP, com CRISP-DM como referencia complementar.
+A validação com dados externos e modelo real ocorreu em 23/11/2026. A inspeção visual no navegador e os testes de upload/download pela interface ainda estão pendentes.
 
-## Repositorio
-
-https://github.com/pedro-ribeiro00/climasaude-2030
-
-## Uso de IA e fontes
-
-O ChatGPT (OpenAI) foi utilizado como ferramenta de apoio para planejar, implementar e revisar o TP4. O responsavel pelo projeto deve conferir e compreender o codigo e os resultados. Fonte do modelo: https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct
-
-
-## TP5 - Painel final e síntese automática
-
-Na página **Painel final**, selecione uma cidade e as fontes de texto, depois clique em **Gerar síntese**. Os textos vêm diretamente do CSV gerado pelo scraping. O Qwen local recebe o contexto climático e seleciona trechos dos blocos coletados. A síntese é extrativa: preserva as frases e o idioma das fontes. Os números da previsão são reproduzidos do contexto enviado pelo painel, sem estimativa pelo LLM. Essa escolha evita alertas e recomendações inventados na geração livre com o modelo pequeno. Não é necessário colar textos.
-
-O scraper não roda automaticamente na abertura do painel. Para atualizar o conteúdo, execute `python scripts/scrape_heat_content.py`. Os resumos são educativos, podem conter erros e não substituem alertas oficiais ou orientação médica.
-
-Os documentos finais TDSP estão nas pastas 01_business_understanding, 02_data_ingest_understanding, 03_modeling, 04_deployment e 05_acceptance. A validação real e suas limitações estão em `05_acceptance/validacao_tp5.md`; as respostas e tempos medidos estão em `05_acceptance/evidencias/`.
-
-## Repetir os testes reais do TP5
-
-Com dependências e pesos instalados, execute na raiz (cada script inicia e encerra sua API de teste):
-
-```bash
-python scripts/validar_tp5.py
-python scripts/validar_interface_tp5.py
-```
-
-Os testes fazem consultas reais à Open-Meteo e inferência local com Qwen; precisam de internet para a previsão. O segundo usa `streamlit.testing.v1.AppTest` para executar páginas e interações, sem substituir inspeção visual no navegador. A API de teste usa a porta 8000, que precisa estar livre. Não execute os scripts simultaneamente em um computador convencional.
-
-Em máquinas sem GPU, instale primeiro o PyTorch CPU para evitar baixar dependências CUDA desnecessárias:
-
-```bash
-python -m pip install 'torch>=2.2,<3' --index-url https://download.pytorch.org/whl/cpu
-python -m pip install -r requirements.txt
-```
-
-O padrão é usar duas threads de CPU para a inferência. Ajuste com `CLIMASAUDE_CPU_THREADS` se necessário. A rota legada `/processar_texto` mantém o resumo abstrativo e pode ter erros factuais; o painel TP5 utiliza `/sintese`, com seleção extrativa verificável.
-
-## Entrega do TP5
-
-- [Relatório acadêmico em PDF](pedro_ribeiro_PB_TP5.PDF)
-- [Checklist das oito rubricas e pendências visuais](05_acceptance/validacao_tp5.md)
-- [Evidências reais de execução](05_acceptance/evidencias/)
-
-A validação funcional está registrada nos JSONs. Inspeção visual, capturas do dashboard e upload/download pelo navegador permanecem pendentes; não foram substituídos por simulações.
+O projeto se relaciona ao ODS 13, com conexões aos ODS 3 e 11. O ChatGPT foi usado como apoio no planejamento, desenvolvimento e revisão; as informações apresentadas pela aplicação devem ser verificadas nas fontes.
