@@ -1,26 +1,23 @@
-# Modelo local - TP4 e TP5
+# Modelo de linguagem - ClimaSaúde 2030
 
-O projeto usa o modelo `Qwen/Qwen2.5-0.5B-Instruct`, da família Qwen, para resumir textos. Ele foi escolhido por ser pequeno (cerca de 0,5 bilhão de parâmetros), seguir instruções e oferecer suporte ao português. Modelos maiores podem produzir respostas melhores, mas demandam mais memória e processamento. O modelo menor pode cometer erros e não foi validado para decisões de saúde; a resposta deve ser conferida na fonte.
+## Modelo escolhido
 
-O modelo é público no Hugging Face e carregado com Transformers e PyTorch. Depois do download inicial, a aplicação usa somente os arquivos locais (`local_files_only=True`), sem enviar o texto para uma API externa. A inferência usa CPU; GPU não é obrigatória. A memória e o tempo necessários dependem da máquina, da instalação e do tamanho do texto. Os pesos ocupam aproximadamente 1 GB em formato de 16 bits, enquanto a execução pode usar mais memória. Verifique o espaço livre e teste na máquina que será utilizada.
+O projeto usa o **Qwen2.5-0.5B-Instruct**, disponível no Hugging Face. Por ser pequeno, pode ser executado em CPU, sem contratar uma API paga. Ele é carregado localmente com PyTorch e Transformers depois do download inicial.
 
-O usuário envia um texto pelo Streamlit. A rota `POST /processar_texto` recebe o texto, carrega o modelo local e retorna o resumo em JSON. As respostas são validadas com Pydantic; entradas inválidas retornam 422, modelo indisponível retorna 503 e falha durante a geração retorna 500. O texto é limitado a 6.000 caracteres e a entrada do modelo a 2.048 tokens. Textos longos são divididos pelo tokenizer real; o código rejeita entradas que excedam o limite em vez de truncá-las silenciosamente. Se uma geração livre atingir o limite de saída sem terminar, retorna erro explícito. A rota não substitui orientação médica ou alertas oficiais.
+## TP4 e TP5
 
-Para instalação, download e execução, consulte o README. Fonte: https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct
+No **TP4**, a rota `POST /processar_texto` passou a gerar resumos livres de textos informados pelo usuário. Essa função continua disponível, mas pode conter imprecisões.
 
-## Verificação local
+No **TP5**, a rota `POST /sintese` utiliza os textos que foram coletados do Ministério da Saúde e da OMS. O modelo recebe trechos numerados e a previsão da cidade selecionada como contexto. O prompt pede a escolha dos trechos mais relevantes sobre calor, saúde e prevenção, preferindo orientações gerais a alertas antigos ou referências bibliográficas.
 
-Em um ambiente Linux com Python 3.12, PyTorch em CPU e sem conexão do modelo com a internet, a rota retornou um resumo em cerca de 10 segundos para um texto curto, incluindo o carregamento inicial. O tempo varia conforme o hardware e o texto. O modelo apresentou redação imperfeita e, em uma tentativa anterior, acrescentou informações que não constavam no texto. Mesmo com instruções para evitar isso, não há garantia de fidelidade; é necessária revisão humana.
+O programa limita a resposta do Qwen aos números dos trechos existentes. Depois, exibe os parágrafos originais selecionados, sem reescrevê-los. Esse procedimento é chamado **sumarização extrativa**. As informações da OMS permanecem em inglês.
 
+A mudança foi feita após testes em que o resumo livre afirmou uma emergência climática sem respaldo na previsão. A seleção extrativa reduz o risco de frases inventadas, mas a fonte e a data ainda devem ser conferidas.
 
-## Síntese automática - TP5
+## Processamento e limites
 
-O mesmo modelo Qwen2.5-0.5B-Instruct foi mantido para evitar outro serviço ou dependências pagas. A nova rota `POST /sintese` recebe os trechos coletados e um contexto com os indicadores climáticos. O modelo seleciona os trechos relevantes de cada bloco e consolida até três evidências, mantendo seu texto original. O contexto climático é incluído em cada seleção.
+Os textos são divididos conforme os tokens aceitos pelo modelo, sem descartar silenciosamente o final. O processamento é sequencial e pode demorar em CPU. A API informa erro quando os dados são inválidos, quando o modelo não está instalado ou quando não é possível concluir a geração.
 
-A engenharia de prompts orienta o modelo a usar apenas os dados recebidos e a não inventar medições, alertas oficiais ou diagnósticos médicos. A geração utiliza `do_sample=False`, mas ainda pode produzir erros. São aceitos até 150 trechos e 40 mil caracteres; o contexto tem limite de 1.200 caracteres. A rota retorna o resumo, o identificador do modelo e as quantidades de trechos e blocos utilizados.
+Em **23/11/2026**, foram testadas sínteses com o Qwen real em três cenários: apenas Ministério da Saúde, apenas OMS e ambas as fontes. Os resultados foram confrontados com o CSV. Os tempos e saídas estão em `05_acceptance/evidencias/api_real.json`.
 
-A validação real mostrou que o modo abstrativo acrescentava uma “emergência climática” não demonstrada pela previsão. O TP5 passou a usar sumarização extrativa: o Qwen gera índices de trechos com decodificação restrita aos índices válidos. A resposta apresenta os trechos originais selecionados e o contexto climático recebido. Não há textos de reserva, inferência simulada ou substituição por outro modelo. As fontes em inglês permanecem em inglês.
-
-Todos os trechos entram nos blocos, limitados por tokens e pelo espaço ocupado pelo contexto. A seleção descarta conteúdo por relevância, como parte normal da sumarização; não há corte silencioso por estouro da janela. A consolidação usa os candidatos dos blocos, até três evidências. O resultado não confirma a validade atual de alertas eventualmente presentes nas páginas coletadas.
-
-Os pesos locais são resolvidos com `snapshot_download(local_files_only=True)` e passados como caminho ao Transformers. Isso evita uma consulta de metadados que, na versão instalada, ocorria mesmo com `local_files_only=True` ao passar apenas o identificador do modelo. Consulte os tempos e as respostas reais em `05_acceptance/evidencias/`.
+Fonte: https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct

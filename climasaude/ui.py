@@ -327,9 +327,8 @@ def render_dashboard() -> None:
 
     st.subheader("Síntese automática com IA")
     st.write(
-        "O Qwen local seleciona trechos relevantes considerando a previsão exibida. "
-        "A síntese extrativa preserva o texto e o idioma das fontes, evitando acrescentar "
-        "recomendações ou alertas gerados pelo modelo."
+        "O modelo escolhe trechos dos textos coletados com base na previsão da cidade. "
+        "O conteúdo aparece no idioma original."
     )
     chave_sintese = (cidade_nome, tuple(escolhidas), previsao["gerado_em_utc"],
                      tuple(filtrado["coletado_em_utc"].astype(str)))
@@ -355,9 +354,8 @@ def render_dashboard() -> None:
         resposta = salvo[1]
         st.write(resposta["resultado"])
         st.caption(
-            f"{resposta['total_trechos']} trechos em {resposta['total_blocos']} blocos. "
-            "Síntese extrativa com Qwen local; confira a fonte e a data das orientações. "
-            "A previsão não determina a existência de uma onda de calor."
+            f"{resposta['total_trechos']} trechos analisados em {resposta['total_blocos']} blocos. "
+            "Confira a fonte e a data do texto. A previsão não é um alerta oficial."
         )
 
     st.caption("Coleta dos textos (UTC): " + ", ".join(
